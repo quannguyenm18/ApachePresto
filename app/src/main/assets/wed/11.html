@@ -1,0 +1,147 @@
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8">
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="theme/css/style-min.css"> 
+  <style>img{display: inline; height: auto; max-width: 100%;}</style>
+ </head>
+ <body>
+  <div class="content"> 
+   <div class="col-md-7 middle-col"> 
+    <h1>Apache Presto - KAFKA Connector</h1> 
+    <div class="clearer"></div> 
+    <p>The Kafka Connector for Presto allows to access data from Apache Kafka using Presto.</p> 
+    <h3>Prerequisites</h3> 
+    <p>Download and install the latest version of the following Apache projects.</p> 
+    <ul class="list" style="-webkit-padding-start:5px"> 
+     <li>Apache ZooKeeper</li> 
+     <li>Apache Kafka</li> 
+    </ul> 
+    <h2>Start ZooKeeper</h2> 
+    <p>Start ZooKeeper server using the following command.</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ bin/zookeeper-server-start.sh config/zookeeper.properties
+</pre> 
+    <p>Now, ZooKeeper starts port on 2181.</p> 
+    <h2>Start Kafka</h2> 
+    <p>Start Kafka in another terminal using the following command.</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ bin/kafka-server-start.sh config/server.properties
+</pre> 
+    <p>After kafka starts, it uses the port number 9092.</p> 
+    <h2>TPCH Data</h2> 
+    <h3>Download tpch-kafka</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$  curl -o kafka-tpch 
+https://repo1.maven.org/maven2/de/softwareforge/kafka_tpch_0811/1.0/kafka_tpch_ 
+0811-1.0.sh 
+</pre> 
+    <p>Now you have downloaded the loader from Maven central using the above command. You will get a similar response as the following.</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+% Total    % Received % Xferd  Average Speed   Time    Time     Time  Current 
+                                 Dload  Upload   Total   Spent    Left  Speed 
+  0     0    0     0    0     0      0      0 --:--:--  0:00:01 --:--:--     0  
+  5 21.6M    5 1279k    0     0  83898      0  0:04:30  0:00:15  0:04:15  129k
+  6 21.6M    6 1407k    0     0  86656      0  0:04:21  0:00:16  0:04:05  131k  
+ 24 21.6M   24 5439k    0     0   124k      0  0:02:57  0:00:43  0:02:14  175k 
+ 24 21.6M   24 5439k    0     0   124k      0  0:02:58  0:00:43  0:02:15  160k 
+ 25 21.6M   25 5736k    0     0   128k      0  0:02:52  0:00:44  0:02:08  181k 
+ ………………………..
+</pre> 
+    <p>Then, make it executable using the following command,</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ chmod 755 kafka-tpch
+</pre> 
+    <h3>Run tpch-kafka</h3> 
+    <p>Run the kafka-tpch program to preload a number of topics with tpch data using the following command.</p> 
+    <h3>Query</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ ./kafka-tpch load --brokers localhost:9092 --prefix tpch. --tpch-type tiny 
+</pre> 
+    <h3>Result</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+2016-07-13T16:15:52.083+0530 INFO main io.airlift.log.Logging Logging 
+to stderr
+2016-07-13T16:15:52.124+0530 INFO main de.softwareforge.kafka.LoadCommand
+Processing tables: [customer, orders, lineitem, part, partsupp, supplier,
+nation, region]
+2016-07-13T16:15:52.834+0530 INFO pool-1-thread-1
+de.softwareforge.kafka.LoadCommand Loading table 'customer' into topic 'tpch.customer'...
+2016-07-13T16:15:52.834+0530 INFO pool-1-thread-2
+de.softwareforge.kafka.LoadCommand Loading table 'orders' into topic 'tpch.orders'...
+2016-07-13T16:15:52.834+0530 INFO pool-1-thread-3
+de.softwareforge.kafka.LoadCommand Loading table 'lineitem' into topic 'tpch.lineitem'...
+2016-07-13T16:15:52.834+0530 INFO pool-1-thread-4
+de.softwareforge.kafka.LoadCommand Loading table 'part' into topic 'tpch.part'...
+………………………
+……………………….
+</pre> 
+    <p>Now, Kafka tables customers,orders,supplier, etc., are loaded using tpch.</p> 
+    <h2>Add Config Settings</h2> 
+    <p>Let’s add the following Kafka connector configuration settings on Presto server.</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+connector.name = kafka  
+
+kafka.nodes = localhost:9092  
+
+kafka.table-names = tpch.customer,tpch.orders,tpch.lineitem,tpch.part,tpch.partsupp, 
+tpch.supplier,tpch.nation,tpch.region  
+
+kafka.hide-internal-columns = false 
+</pre> 
+    <p>In the above configuration, Kafka tables are loaded using Kafka-tpch program.</p> 
+    <h2>Start Presto CLI</h2> 
+    <p>Start Presto CLI using the following command,</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ ./presto --server localhost:8080 --catalog kafka —schema tpch;
+</pre> 
+    <p>Here <b>“tpch"</b> is a schema for Kafka connector and you will receive a response as the following.</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+presto:tpch&gt;
+</pre> 
+    <h2>List Tables</h2> 
+    <p>Following query lists out all the tables in <b>“tpch”</b> schema.</p> 
+    <h3>Query</h3> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+presto:tpch&gt; show tables;
+</pre> 
+    <h3>Result</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+  Table 
+---------- 
+ customer 
+ lineitem 
+ nation 
+ orders
+ part 
+ partsupp 
+ region 
+ supplier 
+</pre> 
+    <h2>Describe Customer Table</h2> 
+    <p>Following query describes <b>“customer”</b> table.</p> 
+    <h3>Query</h3> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+presto:tpch&gt; describe customer; 
+</pre> 
+    <h3>Result</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+  Column           |  Type   |                   Comment 
+-------------------+---------+--------------------------------------------- 
+ _partition_id     | bigint  | Partition Id 
+ _partition_offset | bigint  | Offset for the message within the partition 
+ _segment_start    | bigint  | Segment start offset 
+ _segment_end      | bigint  | Segment end offset 
+ _segment_count    | bigint  | Running message count per segment 
+ _key              | varchar | Key text 
+ _key_corrupt      | boolean | Key data is corrupt 
+ _key_length       | bigint  | Total number of key bytes 
+ _message          | varchar | Message text 
+ _message_corrupt  | boolean | Message data is corrupt 
+ _message_length   | bigint  | Total number of message bytes 
+</pre> 
+    <!-- PRINTING ENDS HERE --> 
+   </div> 
+  </div>
+ </body>
+</html>

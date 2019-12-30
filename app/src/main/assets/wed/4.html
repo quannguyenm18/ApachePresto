@@ -1,0 +1,98 @@
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8">
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="theme/css/style-min.css"> 
+  <style>img{display: inline; height: auto; max-width: 100%;}</style>
+ </head>
+ <body>
+  <div class="content"> 
+   <div class="col-md-7 middle-col"> 
+    <h1>Apache Presto - Configuration Settings</h1> 
+    <div class="clearer"></div> 
+    <p>This chapter will discuss the configuration settings for Presto.</p> 
+    <h2>Presto Verifier</h2> 
+    <p>The Presto Verifier can be used to test Presto against another database (such as MySQL), or to test two Presto clusters against each other.</p> 
+    <h2>Create Database in MySQL</h2> 
+    <p>Open MySQL server and create a database using the following command.</p> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+create database test 
+</pre> 
+    <p>Now you have created “test” database in the server. Create the table and load it with the following query.</p> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+CREATE TABLE verifier_queries( 
+   id INT NOT NULL AUTO_INCREMENT, 
+   suite VARCHAR(256) NOT NULL, 
+   name VARCHAR(256), 
+   test_catalog VARCHAR(256) NOT NULL, 
+   test_schema VARCHAR(256) NOT NULL, 
+   test_prequeries TEXT, 
+   test_query TEXT NOT NULL, 
+   test_postqueries TEXT, 
+   test_username VARCHAR(256) NOT NULL default 'verifier-test', 
+   test_password VARCHAR(256), 
+   control_catalog VARCHAR(256) NOT NULL, 
+   control_schema VARCHAR(256) NOT NULL, 
+   control_prequeries TEXT, 
+   control_query TEXT NOT NULL, 
+   control_postqueries TEXT, 
+   control_username VARCHAR(256) NOT NULL default 'verifier-test', 
+   control_password VARCHAR(256), 
+   session_properties_json TEXT,            
+   PRIMARY KEY (id) 
+);
+</pre> 
+    <h2>Add Config Settings</h2> 
+    <p>Create a properties file to configure the verifier −</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ vi config.properties  
+
+suite = mysuite 
+query-database = jdbc:mysql://localhost:3306/tutorials?user=root&amp;password=pwd 
+control.gateway = jdbc:presto://localhost:8080 
+test.gateway = jdbc:presto://localhost:8080 
+thread-count = 1 
+</pre> 
+    <p>Here, in the <b>query-database</b> field, enter the following details − mysql database name, user name, and password.</p> 
+    <h2>Download JAR File</h2> 
+    <p>Download Presto-verifier jar file by visiting the following link,</p> 
+    <p><a target="_blank" rel="nofollow">https://repo1.maven.org/maven2/com/facebook/presto/presto-verifier/0.149/</a></p> 
+    <p>Now the version <b>“presto-verifier-0.149-executable.jar”</b> is downloaded on your machine.</p> 
+    <h2>Execute JAR</h2> 
+    <p>Execute the JAR file using the following command,</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ mv presto-verifier-0.149-executable.jar verifier  
+$ chmod+x verifier 
+</pre> 
+    <h2>Run Verifier</h2> 
+    <p>Run the verifier using the following command,</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ ./verifier config.properties 
+</pre> 
+    <h2>Create Table</h2> 
+    <p>Let’s create a simple table in <b>“test”</b> database using the following query.</p> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+create table product(id int not null, name varchar(50))
+</pre> 
+    <h2>Insert Table</h2> 
+    <p>After creating a table, insert two records using the following query,</p> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+insert into product values(1,’Phone') 
+insert into product values(2,’Television’)
+</pre> 
+    <h2>Run Verifier Query</h2> 
+    <p>Execute the following sample query in the verifier terminal (./verifier config.propeties) to check the verifier result.</p> 
+    <h3>Sample Query</h3> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+insert into verifier_queries (suite, test_catalog, test_schema, test_query, 
+control_catalog, control_schema, control_query) values 
+('mysuite', 'mysql', 'default', 'select * from mysql.test.product', 
+'mysql', 'default', 'select * from mysql.test.product');
+</pre> 
+    <p>Here, <b>select * from mysql.test.product</b> query refers to mysql catalog, <b>test</b> is database name and <b>product</b> is table name. In this way, you can access mysql connector using Presto server.</p> 
+    <p>Here, two same select queries are tested against each other to see the performance. Similarly, you can run other queries to test the performance results. You can also connect two Presto clusters to check the performance results.</p> 
+    <!-- PRINTING ENDS HERE --> 
+   </div> 
+  </div>
+ </body>
+</html>

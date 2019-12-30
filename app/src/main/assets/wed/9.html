@@ -1,0 +1,83 @@
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8">
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="theme/css/style-min.css"> 
+  <style>img{display: inline; height: auto; max-width: 100%;}</style>
+ </head>
+ <body>
+  <div class="content"> 
+   <div class="col-md-7 middle-col"> 
+    <h1>Apache Presto - JMX Connector</h1> 
+    <div class="clearer"></div> 
+    <p>Java Management Extensions (JMX) gives information about the Java Virtual Machine and software running inside JVM. The JMX connector is used to query JMX information in Presto server.</p> 
+    <p>As we have already enabled <b>“jmx.properties”</b> file under <b>“etc/catalog”</b> directory. Now connect Prest CLI to enable JMX plugin.</p> 
+    <h2>Presto CLI</h2> 
+    <h3>Query</h3> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+$ ./presto --server localhost:8080 --catalog jmx --schema jmx 
+</pre> 
+    <h3>Result</h3> 
+    <p>You will receive the following response.</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+presto:jmx&gt; 
+</pre> 
+    <h2>JMX Schema</h2> 
+    <p>To list out all the schemas in “jmx”, type the following query.</p> 
+    <h3>Query</h3> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+presto:jmx&gt; show schemas from jmx; 
+</pre> 
+    <h3>Result</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+      Schema 
+-------------------- 
+ information_schema  
+ current
+</pre> 
+    <h2>Show Tables</h2> 
+    <p>To view the tables in the “current” schema, use the following command.</p> 
+    <h3>Query 1</h3> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+presto:jmx&gt; show tables from jmx.current; 
+</pre> 
+    <h3>Result</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+                                    Table                   
+------------------------------------------------------------------------------
+ com.facebook.presto.execution.scheduler:name = nodescheduler
+ com.facebook.presto.execution:name = queryexecution
+ com.facebook.presto.execution:name = querymanager
+ com.facebook.presto.execution:name = remotetaskfactory
+ com.facebook.presto.execution:name = taskexecutor
+ com.facebook.presto.execution:name = taskmanager
+ com.facebook.presto.execution:type = queryqueue,name = global,expansion = global
+ ………………
+ ……………….
+</pre> 
+    <h3>Query 2</h3> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+presto:jmx&gt; select * from jmx.current.”java.lang:type = compilation"; 
+</pre> 
+    <h3>Result</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+node               | compilationtimemonitoringsupported |      name   |         objectname         | totalcompilationti
+--------------------------------------+------------------------------------+--------------------------------+----------------------------+-------------------
+ffffffff-ffff-ffff-ffff-ffffffffffff | true | HotSpot 64-Bit Tiered Compilers | java.lang:type=Compilation |       1276
+</pre> 
+    <h3>Query 3</h3> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+presto:jmx&gt; select * from jmx.current."com.facebook.presto.server:name = taskresource";
+</pre> 
+    <h3>Result</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+ node                 | readfromoutputbuffertime.alltime.count 
+ | readfromoutputbuffertime.alltime.max | readfromoutputbuffertime.alltime.maxer
+ --------------------------------------+---------------------------------------+--------------------------------------+--------------------------------------- 
+ ffffffff-ffff-ffff-ffff-ffffffffffff |                                   92.0 |                          1.009106149 | 
+</pre> 
+    <!-- PRINTING ENDS HERE --> 
+   </div> 
+  </div>
+ </body>
+</html>

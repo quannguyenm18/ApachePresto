@@ -1,0 +1,85 @@
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8">
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="theme/css/style-min.css"> 
+  <style>img{display: inline; height: auto; max-width: 100%;}</style>
+ </head>
+ <body>
+  <div class="content"> 
+   <div class="col-md-7 middle-col"> 
+    <h1>Apache Presto - JDBC Interface</h1> 
+    <div class="clearer"></div> 
+    <p>Presto’s JDBC interface is used to access Java application.</p> 
+    <h3>Prerequisites</h3> 
+    <p>Install presto-jdbc-0.150.jar</p> 
+    <p>You can download the JDBC jar file by visiting the following link,</p> 
+    <p><a target="_blank" rel="nofollow">https://repo1.maven.org/maven2/com/facebook/presto/presto-jdbc/0.150/</a></p> 
+    <p>After the jar file has been downloaded, add it to the class path of your Java application.</p> 
+    <h2>Create a Simple Application</h2> 
+    <p>Let’s create a simple java application using JDBC interface.</p> 
+    <p>Coding − PrestoJdbcSample.java</p> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+import java.sql.*; 
+import com.facebook.presto.jdbc.PrestoDriver; 
+
+//import presto jdbc driver packages here.  
+public class PrestoJdbcSample {  
+   public static void main(String[] args) {  
+      Connection connection = null; 
+      Statement statement = null;  
+      try { 
+         
+         Class.forName("com.facebook.presto.jdbc.PrestoDriver");  
+         connection = DriverManager.getConnection(
+         "jdbc:presto://localhost:8080/mysql/tutorials", "tutorials", “"); 
+         
+         //connect mysql server tutorials database here 
+         statement = connection.createStatement(); 
+         String sql;  
+         sql = "select auth_id, auth_name from mysql.tutorials.author”; 
+        
+         //select mysql table author table two columns  
+         ResultSet resultSet = statement.executeQuery(sql);  
+         while(resultSet.next()){  
+            int id  = resultSet.getInt("auth_id"); 
+            String name = resultSet.getString(“auth_name");  
+            System.out.print("ID: " + id + ";\nName: " + name + "\n"); 
+         }  
+         
+         resultSet.close(); 
+         statement.close(); 
+         connection.close(); 
+         
+      }catch(SQLException sqlException){ 
+         sqlException.printStackTrace(); 
+      }catch(Exception exception){ 
+         exception.printStackTrace(); 
+      } 
+   } 
+}
+</pre> 
+    <p>Save the file and quit the application. Now, start Presto server in one terminal and open a new terminal to compile and execute the result. Following are the steps −</p> 
+    <h3>Compilation</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+~/Workspace/presto/presto-jdbc $ javac -cp presto-jdbc-0.149.jar  PrestoJdbcSample.java
+</pre> 
+    <h3>Execution</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+~/Workspace/presto/presto-jdbc $ java -cp .:presto-jdbc-0.149.jar  PrestoJdbcSample
+</pre> 
+    <h3>Output</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+INFO: Logging initialized @146ms  
+ID: 1; 
+Name: Doug Cutting 
+ID: 2; 
+Name: James Gosling 
+ID: 3; 
+Name: Dennis Ritchie 
+</pre> 
+    <!-- PRINTING ENDS HERE --> 
+   </div> 
+  </div>
+ </body>
+</html>

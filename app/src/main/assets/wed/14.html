@@ -1,0 +1,1751 @@
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8">
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="theme/css/style-min.css"> 
+  <style>img{display: inline; height: auto; max-width: 100%;}</style>
+ </head>
+ <body>
+  <div class="content"> 
+   <div class="col-md-7 middle-col"> 
+    <h1>Apache Presto - Quick Guide</h1> 
+    <div class="clearer"></div> 
+    <h1>Apache Presto - Overview</h1> 
+    <p>Data analytics is the process of analyzing raw data to gather relevant information for better decision making. It is primarily used in many organizations to make business decisions. Well, big data analytics involves a large amount of data and this process is quite complex, hence companies use different strategies.</p> 
+    <p>For example, Facebook is one of the leading data driven and largest data warehouse company in the world. Facebook warehouse data is stored in Hadoop for large scale computation. Later, when warehouse data grew to petabytes, they decided to develop a new system with low latency. In the year of 2012, Facebook team members designed <b>“Presto”</b> for interactive query analytics that would operate quickly even with petabytes of data.</p> 
+    <h2>What is Apache Presto?</h2> 
+    <p>Apache Presto is a distributed parallel query execution engine, optimized for low latency and interactive query analysis. Presto runs queries easily and scales without down time even from gigabytes to petabytes.</p> 
+    <p>A single Presto query can process data from multiple sources like HDFS, MySQL, Cassandra, Hive and many more data sources. Presto is built in Java and easy to integrate with other data infrastructure components. Presto is powerful, and leading companies like Airbnb, DropBox, Groupon, Netflix are adopting it.</p> 
+    <h2>Presto − Features</h2> 
+    <p>Presto contains the following features −</p> 
+    <ul class="list" style="-webkit-padding-start:5px"> 
+     <li>Simple and extensible architecture.</li> 
+     <li>Pluggable connectors - Presto supports pluggable connector to provide metadata and data for queries.</li> 
+     <li>Pipelined executions - Avoids unnecessary I/O latency overhead.</li> 
+     <li>User-defined functions - Analysts can create custom user-defined functions to migrate easily.</li> 
+     <li>Vectorized columnar processing.</li> 
+    </ul> 
+    <h2>Presto − Benefits</h2> 
+    <p>Here is a list of benefits that Apache Presto offers −</p> 
+    <ul class="list" style="-webkit-padding-start:5px"> 
+     <li>Specialized SQL operations</li> 
+     <li>Easy to install and debug</li> 
+     <li>Simple storage abstraction</li> 
+     <li>Quickly scales petabytes data with low latency</li> 
+    </ul> 
+    <h2>Presto − Applications</h2> 
+    <p>Presto supports most of today’s best industrial applications. Let’s take a look at some of the notable applications.</p> 
+    <ul class="list" style="-webkit-padding-start:5px"> 
+     <li><p><b>Facebook</b> − Facebook built Presto for data analytics needs. Presto easily scales large velocity of data.</p></li> 
+     <li><p><b>Teradata</b> − Teradata provides end-to-end solutions in Big Data analytics and data warehousing. Teradata contribution to Presto makes it easier for more companies to enable all analytical needs.</p></li> 
+     <li><p><b>Airbnb</b> − Presto is an integral part of the Airbnb data infrastructure. Well, hundreds of employees are running queries each day with the technology.</p></li> 
+    </ul> 
+    <h2>Why Presto?</h2> 
+    <p>Presto supports standard ANSI SQL which has made it very easy for data analysts and developers. Though it is built in Java, it avoids typical issues of Java code related to memory allocation and garbage collection. Presto has a connector architecture that is Hadoop friendly. It allows to easily plug in file systems.</p> 
+    <p>Presto runs on multiple Hadoop distributions. In addition, Presto can reach out from a Hadoop platform to query Cassandra, relational databases, or other data stores. This cross-platform analytic capability allows Presto users to extract maximum business value from gigabytes to petabytes of data.</p> 
+    <h1>Apache Presto - Architecture</h1> 
+    <p>The architecture of Presto is almost similar to classic MPP (massively parallel processing) DBMS architecture. The following diagram illustrates the architecture of Presto.</p> 
+    <img src="images/presto_architecture.jpg" alt="Presto Architecture"> 
+    <p>The above diagram consists of different components. Following table describes each of the component in detail.</p> 
+    <table class="table table-bordered" style="background-color:white"> 
+     <tbody> 
+      <tr> 
+       <th style="text-align:center;">S.No</th> 
+       <th style="text-align:center;">Component &amp; Description</th> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">1.</td> 
+       <td><p><b>Client</b></p> <p>Client (Presto CLI) submits SQL statements to a coordinator to get the result.</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">2.</td> 
+       <td><p><b>Coordinator</b></p> <p>Coordinator is a master daemon. The coordinator initially parses the SQL queries then analyzes and plans for the query execution. Scheduler performs pipeline execution, assigns work to the closest node and monitors progress.</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">3.</td> 
+       <td><p><b>Connector</b></p> <p>Storage plugins are called as connectors. Hive, HBase, MySQL, Cassandra and many more act as a connector; otherwise you can also implement a custom one. The connector provides metadata and data for queries. The coordinator uses the connector to get metadata for building a query plan.</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">4.</td> 
+       <td><p><b>Worker</b></p> <p>The coordinator assigns task to worker nodes. The workers get actual data from the connector. Finally, the worker node delivers result to the client.</p> </td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h2>Presto − Workflow</h2> 
+    <p>Presto is a distributed system that runs on a cluster of nodes. Presto’s distributed query engine is optimized for interactive analysis and supports standard ANSI SQL, including complex queries, aggregations, joins, and window functions. Presto architecture is simple and extensible. Presto client (CLI) submits SQL statements to a master daemon coordinator.</p> 
+    <p>The scheduler connects through execution pipeline. The scheduler assigns work to nodes which is closest to the data and monitors progress. The coordinator assigns task to multiple worker nodes and finally the worker node delivers the result back to the client. The client pulls data from the output process. Extensibility is the key design. Pluggable connectors like Hive, HBase, MySQL, etc., provides metadata and data for queries. Presto was designed with a “simple storage abstraction” that makes it easy to provide SQL query capability against these different kind of data sources.</p> 
+    <h3>Execution Model</h3> 
+    <p>Presto supports custom query and execution engine with operators designed to support SQL semantics. In addition to improved scheduling, all processing is in memory and pipelined across the network between different stages. This avoids unnecessary I/O latency overhead.</p> 
+    <h1>Apache Presto - Installation</h1> 
+    <p>This chapter will explain how to install Presto on your machine. Let’s go through the basic requirements of Presto,</p> 
+    <ul class="list" style="-webkit-padding-start:5px"> 
+     <li>Linux or Mac OS</li> 
+     <li>Java version 8</li> 
+    </ul> 
+    <p>Now, let’s continue the following steps to install Presto on your machine.</p> 
+    <h2>Verifying Java installation</h2> 
+    <p>Hopefully, you have already installed Java version 8 on your machine right now, so you just verify it using the following command.</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ java -version 
+</pre> 
+    <p>If Java is successfully installed on your machine, you could see the version of installed Java. If Java is not installed, follow the subsequent steps to install Java 8 on your machine.</p> 
+    <p>Download JDK. Download the latest version of JDK by visiting the following link.</p> 
+    <p><a target="_blank" rel="nofollow">http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html</a></p> 
+    <p>The latest version is JDK 8u 92 and the file is “jdk-8u92-linux-x64.tar.gz”. Please download the file on your machine.</p> 
+    <p>After that, extract the files and move to the specific directory.</p> 
+    <p>Then set Java alternatives. Finally Java will be installed on your machine.</p> 
+    <h2>Apache Presto Installation</h2> 
+    <p>Download the latest version of Presto by visiting the following link,</p> 
+    <p><a target="_blank" rel="nofollow">https://repo1.maven.org/maven2/com/facebook/presto/presto-server/0.149/</a></p> 
+    <p>Now the latest version of “presto-server-0.149.tar.gz” will be downloaded on your machine.</p> 
+    <h3>Extract tar Files</h3> 
+    <p>Extract the <b>tar</b> file using the following command −</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ tar  -zxf  presto-server-0.149.tar.gz 
+$ cd presto-server-0.149 
+</pre> 
+    <h2>Configuration Settings</h2> 
+    <h3>Create “data” directory</h3> 
+    <p>Create a data directory outside the installation directory, which will be used for storing logs, metadata, etc., so that it is to be easily preserved when upgrading Presto. It is defined using the following code −</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ cd  
+$ mkdir data
+</pre> 
+    <p>To view the path where it is located, use the command “pwd”. This location will be assigned in the next node.properties file.</p> 
+    <h3>Create “etc” directory</h3> 
+    <p>Create an etc directory inside Presto installation directory using the following code −</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ cd presto-server-0.149 
+$ mkdir etc
+</pre> 
+    <p>This directory will hold configuration files. Let’s create each file one by one.</p> 
+    <h3>Node Properties</h3> 
+    <p>Presto node properties file contains environmental configuration specific to each node. It is created inside etc directory (etc/node.properties) using the following code −</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ cd etc 
+$ vi node.properties  
+
+node.environment = production 
+node.id = ffffffff-ffff-ffff-ffff-ffffffffffff 
+node.data-dir = /Users/../workspace/Presto
+</pre> 
+    <p>After making all the changes, save the file, and quit the terminal. Here <b>node.data</b> is the location path of the above created data directory. <b>node.id</b> represents the unique identifier for each node.</p> 
+    <h3>JVM Config</h3> 
+    <p>Create a file “jvm.config” inside etc directory (etc/jvm.config). This file contains a list of command line options used for launching the Java Virtual Machine.</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ cd etc 
+$ vi jvm.config  
+
+-server 
+-Xmx16G 
+-XX:+UseG1GC 
+-XX:G1HeapRegionSize = 32M 
+-XX:+UseGCOverheadLimit 
+-XX:+ExplicitGCInvokesConcurrent 
+-XX:+HeapDumpOnOutOfMemoryError 
+-XX:OnOutOfMemoryError = kill -9 %p 
+</pre> 
+    <p>After making all the changes, save the file, and quit the terminal.</p> 
+    <h3>Config Properties</h3> 
+    <p>Create a file “config.properties” inside etc directory(etc/config.properties). This file contains the configuration of Presto server. If you are setting up a single machine for testing, Presto server can function only as the coordination process as defined using the following code −</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ cd etc 
+$ vi config.properties  
+
+coordinator = true 
+node-scheduler.include-coordinator = true 
+http-server.http.port = 8080 
+query.max-memory = 5GB 
+query.max-memory-per-node = 1GB 
+discovery-server.enabled = true 
+discovery.uri = http://localhost:8080
+</pre> 
+    <p>Here,</p> 
+    <ul class="list" style="-webkit-padding-start:5px"> 
+     <li><p><b>coordinator</b> − master node.</p></li> 
+     <li><p><b>node-scheduler.include-coordinator</b> − Allows scheduling work on the coordinator.</p></li> 
+     <li><p><b>http-server.http.port</b> − Specifies the port for the HTTP server.</p></li> 
+     <li><p><b>query.max-memory=5GB</b> − The maximum amount of distributed memory.</p></li> 
+     <li><p><b>query.max-memory-per-node=1GB</b> − The maximum amount of memory per node.</p></li> 
+     <li><p><b>discovery-server.enabled</b> − Presto uses the Discovery service to find all the nodes in the cluster.</p></li> 
+     <li><p><b>discovery.uri</b> − he URI to the Discovery server.</p></li> 
+    </ul> 
+    <p>If you are setting up multiple machine Presto server, Presto will function as both coordination and worker process. Use this configuration setting to test Presto server on multiple machines.</p> 
+    <h3>Configuration for Coordinator</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ cd etc 
+$ vi config.properties  
+
+coordinator = true 
+node-scheduler.include-coordinator = false 
+http-server.http.port = 8080 
+query.max-memory = 50GB 
+query.max-memory-per-node = 1GB 
+discovery-server.enabled = true 
+discovery.uri = http://localhost:8080 
+</pre> 
+    <h3>Configuration for Worker</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ cd etc 
+$ vi config.properties  
+
+coordinator = false 
+http-server.http.port = 8080 
+query.max-memory = 50GB 
+query.max-memory-per-node = 1GB 
+discovery.uri = http://localhost:8080
+</pre> 
+    <h3>Log Properties</h3> 
+    <p>Create a file “log.properties” inside etc directory(etc/log.properties). This file contains minimum log level for named logger hierarchies. It is defined using the following code −</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ cd etc 
+$ vi log.properties  
+com.facebook.presto = INFO
+</pre> 
+    <p>Save the file and quit the terminal. Here, four log levels are used such as DEBUG, INFO, WARN and ERROR. Default log level is INFO.</p> 
+    <h3>Catalog Properties</h3> 
+    <p>Create a directory “catalog” inside etc directory(etc/catalog). This will be used for mounting data. For example, create <b>etc/catalog/jmx.properties</b> with the following contents to mount the <b>jmx connector</b> as the jmx catalog −</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ cd etc 
+$ mkdir catalog 
+$ cd catalog 
+$ vi jmx.properties  
+connector.name = jmx 
+</pre> 
+    <h2>Start Presto</h2> 
+    <p>Presto can be started using the following command,</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ bin/launcher start 
+</pre> 
+    <p>Then you will see the response similar to this,</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+Started as 840
+</pre> 
+    <h2>Run Presto</h2> 
+    <p>To launch Presto server, use the following command −</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ bin/launcher run
+</pre> 
+    <p>After successfully launching Presto server, you can find log files in “var/log” directory.</p> 
+    <ul class="list" style="-webkit-padding-start:5px"> 
+     <li><p><b>launcher.log</b> − This log is created by the launcher and is connected to the stdout and stderr streams of the server.</p></li> 
+     <li><p><b>server.log</b> − This is the main log file used by Presto.</p></li> 
+     <li><p><b>http-request.log</b> − HTTP request received by the server.</p></li> 
+    </ul> 
+    <p>As of now, you have successfully installed Presto configuration settings on your machine. Let’s continue the steps to install Presto CLI.</p> 
+    <h2>Install Presto CLI</h2> 
+    <p>The Presto CLI provides a terminal-based interactive shell for running queries.</p> 
+    <p>Download the Presto CLI by visiting the following link,</p> 
+    <p><a target="_blank" rel="nofollow">https://repo1.maven.org/maven2/com/facebook/presto/presto-cli/0.149/</a></p> 
+    <p>Now “presto-cli-0.149-executable.jar” will be installed on your machine.</p> 
+    <h3>Run CLI</h3> 
+    <p>After downloading the presto-cli, copy it to the location which you want to run it from. This location may be any node that has network access to the coordinator. First change the name of the Jar file to Presto. Then make it executable with <b>chmod + x</b> command using the following code −</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ mv presto-cli-0.149-executable.jar presto  
+$ chmod +x presto
+</pre> 
+    <p>Now execute CLI using the following command,</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+./presto --server localhost:8080 --catalog jmx --schema default  
+Here jmx(Java Management Extension) refers to catalog and default referes to schema. 
+</pre> 
+    <p>You will see the following response,</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+ presto:default&gt;
+</pre> 
+    <p>Now type “jps” command on your terminal and you will see the running daemons.</p> 
+    <h2>Stop Presto</h2> 
+    <p>After having performed all the executions, you can stop the presto server using the following command −</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ bin/launcher stop 
+</pre> 
+    <h1>Apache Presto - Configuration Settings</h1> 
+    <p>This chapter will discuss the configuration settings for Presto.</p> 
+    <h2>Presto Verifier</h2> 
+    <p>The Presto Verifier can be used to test Presto against another database (such as MySQL), or to test two Presto clusters against each other.</p> 
+    <h2>Create Database in MySQL</h2> 
+    <p>Open MySQL server and create a database using the following command.</p> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+create database test 
+</pre> 
+    <p>Now you have created “test” database in the server. Create the table and load it with the following query.</p> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+CREATE TABLE verifier_queries( 
+   id INT NOT NULL AUTO_INCREMENT, 
+   suite VARCHAR(256) NOT NULL, 
+   name VARCHAR(256), 
+   test_catalog VARCHAR(256) NOT NULL, 
+   test_schema VARCHAR(256) NOT NULL, 
+   test_prequeries TEXT, 
+   test_query TEXT NOT NULL, 
+   test_postqueries TEXT, 
+   test_username VARCHAR(256) NOT NULL default 'verifier-test', 
+   test_password VARCHAR(256), 
+   control_catalog VARCHAR(256) NOT NULL, 
+   control_schema VARCHAR(256) NOT NULL, 
+   control_prequeries TEXT, 
+   control_query TEXT NOT NULL, 
+   control_postqueries TEXT, 
+   control_username VARCHAR(256) NOT NULL default 'verifier-test', 
+   control_password VARCHAR(256), 
+   session_properties_json TEXT,            
+   PRIMARY KEY (id) 
+);
+</pre> 
+    <h2>Add Config Settings</h2> 
+    <p>Create a properties file to configure the verifier −</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ vi config.properties  
+
+suite = mysuite 
+query-database = jdbc:mysql://localhost:3306/tutorials?user=root&amp;password=pwd 
+control.gateway = jdbc:presto://localhost:8080 
+test.gateway = jdbc:presto://localhost:8080 
+thread-count = 1 
+</pre> 
+    <p>Here, in the <b>query-database</b> field, enter the following details − mysql database name, user name, and password.</p> 
+    <h2>Download JAR File</h2> 
+    <p>Download Presto-verifier jar file by visiting the following link,</p> 
+    <p><a target="_blank" rel="nofollow">https://repo1.maven.org/maven2/com/facebook/presto/presto-verifier/0.149/</a></p> 
+    <p>Now the version <b>“presto-verifier-0.149-executable.jar”</b> is downloaded on your machine.</p> 
+    <h2>Execute JAR</h2> 
+    <p>Execute the JAR file using the following command,</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ mv presto-verifier-0.149-executable.jar verifier  
+$ chmod+x verifier 
+</pre> 
+    <h2>Run Verifier</h2> 
+    <p>Run the verifier using the following command,</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ ./verifier config.properties 
+</pre> 
+    <h2>Create Table</h2> 
+    <p>Let’s create a simple table in <b>“test”</b> database using the following query.</p> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+create table product(id int not null, name varchar(50))
+</pre> 
+    <h2>Insert Table</h2> 
+    <p>After creating a table, insert two records using the following query,</p> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+insert into product values(1,’Phone') 
+insert into product values(2,’Television’)
+</pre> 
+    <h2>Run Verifier Query</h2> 
+    <p>Execute the following sample query in the verifier terminal (./verifier config.propeties) to check the verifier result.</p> 
+    <h3>Sample Query</h3> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+insert into verifier_queries (suite, test_catalog, test_schema, test_query, 
+control_catalog, control_schema, control_query) values 
+('mysuite', 'mysql', 'default', 'select * from mysql.test.product', 
+'mysql', 'default', 'select * from mysql.test.product');
+</pre> 
+    <p>Here, <b>select * from mysql.test.product</b> query refers to mysql catalog, <b>test</b> is database name and <b>product</b> is table name. In this way, you can access mysql connector using Presto server.</p> 
+    <p>Here, two same select queries are tested against each other to see the performance. Similarly, you can run other queries to test the performance results. You can also connect two Presto clusters to check the performance results.</p> 
+    <h1>Apache Presto - Administration Tools</h1> 
+    <p>In this chapter, we will discuss the administration tools used in Presto. Let’s start with the Web Interface of Presto.</p> 
+    <h2>Web Interface</h2> 
+    <p>Presto provides a web interface for monitoring and managing queries. It can be accessed from the port number specified in the coordinator Config Properties.</p> 
+    <p>Start Presto server and Presto CLI. Then you can access the web interface from the following url − <b>http://localhost:8080/</b></p> 
+    <img src="images/web_interface.jpg" alt="Web Interface"> 
+    <p>The output will be similar to the above screen.</p> 
+    <p>Here, the main page has a list of queries along with information like unique query ID, query text, query state, percentage completed, username and source from which this query is originated. Latest queries are running first, then completed or not completed queries are displayed at the bottom.</p> 
+    <h2>Tuning the Performance on Presto</h2> 
+    <p>If Presto cluster is having any performance-related issues, change your default configuration settings to the following settings.</p> 
+    <h3>Config Properties</h3> 
+    <ul class="list" style="-webkit-padding-start:5px"> 
+     <li><p><b>task. info -refresh-max-wait</b> − Reduces coordinator work load.</p></li> 
+     <li><p><b>task.max-worker-threads</b> − Splits the process and assigns to each worker nodes.</p></li> 
+     <li><p><b>distributed-joins-enabled</b> − Hash-based distributed joins.</p></li> 
+     <li><p><b>node-scheduler.network-topology</b> − Sets network topology to scheduler.</p></li> 
+    </ul> 
+    <h3>JVM Settings</h3> 
+    <p>Change your default JVM settings to the following settings. This will be helpful for diagnosing garbage collection issues.</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+-XX:+PrintGCApplicationConcurrentTime 
+-XX:+PrintGCApplicationStoppedTime 
+-XX:+PrintGCCause 
+-XX:+PrintGCDateStamps 
+-XX:+PrintGCTimeStamps 
+-XX:+PrintGCDetails 
+-XX:+PrintReferenceGC 
+-XX:+PrintClassHistogramAfterFullGC 
+-XX:+PrintClassHistogramBeforeFullGC 
+-XX:PrintFLSStatistics = 2 
+-XX:+PrintAdaptiveSizePolicy 
+-XX:+PrintSafepointStatistics 
+-XX:PrintSafepointStatisticsCount = 1 
+</pre> 
+    <h1>Apache Presto - Basic SQL Operations</h1> 
+    <p>In this chapter, we will discuss how to create and execute queries on Presto. Let us go through Presto supported basic data types.</p> 
+    <h2>Basic Data Types</h2> 
+    <p>The following table describes the basic data types of Presto.</p> 
+    <table class="table table-bordered" style="background-color:white"> 
+     <tbody> 
+      <tr> 
+       <th style="text-align:center;">S.No</th> 
+       <th style="text-align:center;">Data type &amp; Description</th> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">1.</td> 
+       <td><p><b>VARCHAR</b></p> <p>Variable length character data</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">2.</td> 
+       <td><p><b>BIGINT</b></p> <p>A 64-bit signed integer</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">3.</td> 
+       <td><p><b>DOUBLE</b></p> <p>A 64-bit floating point double precision value</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">4.</td> 
+       <td><p><b>DECIMAL</b></p> <p>A fixed precision decimal number. For example DECIMAL(10,3) - 10 is precision, i.e. total number of digits and 3 is scale value represented as fractional point. Scale is optional and default value is 0</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">5.</td> 
+       <td><p><b>BOOLEAN</b></p> <p>Boolean values true and false</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">6.</td> 
+       <td><p><b>VARBINARY</b></p> <p>Variable length binary data</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">7.</td> 
+       <td><p><b>JSON</b></p> <p>JSON data</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">8.</td> 
+       <td><p><b>DATE</b></p> <p>Date data type represented as year-month-day</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">9.</td> 
+       <td><p><b>TIME, TIMESTAMP, TIMESTAMP with TIME ZONE</b></p> <p>TIME - Time of the day (hour-min-sec-millisecond)</p> <p>TIMESTAMP - Date and time of the day</p> <p>TIMESTAMP with TIME ZONE - Date and time of the day with time zone from the value</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">10.</td> 
+       <td><p><b>INTERVAL</b></p> <p>Stretch or extend date and time data types</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">11.</td> 
+       <td><p><b>ARRAY</b></p> <p>Array of the given component type. For example, ARRAY[5,7]</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">12.</td> 
+       <td><p><b>MAP</b></p> <p>Map between the given component types. For example, MAP(ARRAY[‘one’,’two’],ARRAY[5,7])</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">13.</td> 
+       <td><p><b>ROW</b></p> <p>Row structure made up of named fields</p> </td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h2>Presto − Operators</h2> 
+    <p>Presto operators are listed in the following table.</p> 
+    <table class="table table-bordered" style="background-color:white"> 
+     <tbody> 
+      <tr> 
+       <th style="text-align:center;">S.No</th> 
+       <th style="text-align:center;">Operator &amp; Description</th> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">1.</td> 
+       <td><a>Arithmetic operator</a> <p>Presto supports arithmetic operators such as +, -, *, /, %</p></td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">2.</td> 
+       <td><a>Relational operator</a> <p>&lt;,&gt;,&lt;=,&gt;=,=,&lt;&gt;</p></td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">3.</td> 
+       <td><a>Logical operator</a> <p>AND, OR, NOT</p></td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">4.</td> 
+       <td><a>Range operator</a> <p>Range operator is used to test the value in a specific range. Presto supports BETWEEN, IS NULL, IS NOT NULL, GREATEST and LEAST</p></td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">5.</td> 
+       <td><a>Decimal operator</a> <p>Binary arithmetic decimal operator performs binary arithmetic operation for decimal type Unary decimal operator − The - <b>operator</b> performs negation</p></td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">6.</td> 
+       <td><a>String operator</a> <p>The <b>‘||’ operator</b> performs string concatenation</p></td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">7.</td> 
+       <td><a>Date and time operator</a> <p>Performs arithmetic addition and subtraction operations on date and time data types</p></td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">8.</td> 
+       <td><a>Array operator</a> <p>Subscript operator[] - access an element of an array</p><p>Concatenation operator || - concatenate an array with an array or an element of the same type</p></td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">9.</td> 
+       <td><a>Map operator</a> <p>Map subscript operator [] - retrieve the value corresponding to a given key from a map</p></td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h1>Apache Presto - SQL Functions</h1> 
+    <p>As of now we were discussing running some simple basic queries on Presto. This chapter will discuss the important SQL functions.</p> 
+    <h2>Math Functions</h2> 
+    <p>Math functions operate on mathematical formulas. Following table describes the list of functions in detail.</p> 
+    <table class="table table-bordered" style="background-color:white"> 
+     <tbody> 
+      <tr> 
+       <th style="text-align:center;">S.No.</th> 
+       <th style="text-align:center;">Function &amp; Description</th> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">1.</td> 
+       <td><a>abs(x)</a> <p>Returns the absolute value of <b>x</b></p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">2.</td> 
+       <td><a>cbrt(x)</a> <p>Returns the cube root of <b>x</b></p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">3.</td> 
+       <td><a>ceiling(x)</a> <p>Returns the <b>x</b> value rounded up to the nearest integer</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">4.</td> 
+       <td><p><b>ceil(x)</b></p> <p>Alias for ceiling(x)</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">5.</td> 
+       <td><a>degrees(x)</a> <p>Returns the degree value for <b>x</b></p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">6.</td> 
+       <td><a>e(x)</a> <p>Returns the double value for Euler’s number</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">7.</td> 
+       <td><p><b>exp(x)</b></p> <p>Returns the exponent value for Euler’s number</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">8.</td> 
+       <td><a>floor(x)</a> <p>Returns <b>x</b> rounded down to the nearest integer</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">9.</td> 
+       <td><p><b>from_base(string,radix)</b></p> <p>Returns the value of string interpreted as a base-radix number</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">10.</td> 
+       <td><p><b>ln(x)</b></p> <p>Returns the natural logarithm of <b>x</b></p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">11.</td> 
+       <td><a>log2(x)</a> <p>Returns the base 2 logarithm of <b>x</b></p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">12.</td> 
+       <td><p><b>log10(x)</b></p> <p>Returns the base 10 logarithm of <b>x</b></p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">13.</td> 
+       <td><p><b>log(x,y)</b></p> <p>Returns the base <b>y</b> logarithm of <b>x</b></p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">14.</td> 
+       <td><a>mod(n,m)</a> <p>Returns the modulus (remainder) of <b>n</b> divided by <b>m</b></p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">15.</td> 
+       <td><p><b>pi()</b></p> <p>Returns pi value. The result will be returned as a double value</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">16.</td> 
+       <td><a>power(x,p)</a> <p>Returns power of value <b>‘p’</b> to the <b>x</b> value</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">17.</td> 
+       <td><p><b>pow(x,p)</b></p> <p>Alias for power(x,p)</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">18.</td> 
+       <td><a>radians(x)</a> <p>converts the angle <b>x</b> in degree radians</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">19.</td> 
+       <td><p><b>rand()</b></p> <p>Alias for radians()</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">20.</td> 
+       <td><a>random()</a> <p>Returns the pseudo-random value</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">21.</td> 
+       <td><p><b>rand(n)</b></p> <p>Alias for random()</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">22.</td> 
+       <td><a>round(x)</a> <p>Returns the rounded value for x</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">23.</td> 
+       <td><p><b>round(x,d)</b></p> <p><b>x</b> value rounded for the <b>‘d’</b> decimal places</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">24.</td> 
+       <td><p><b>sign(x)</b></p> <p>Returns the signum function of x, i.e.,</p> <p>0 if the argument is 0</p> <p>1 if the argument is greater than 0</p> <p>-1 if the argument is less than 0</p> <p>For double arguments, the function additionally returns −</p> <p>NaN if the argument is NaN</p> <p>1 if the argument is +Infinity</p> <p>-1 if the argument is -Infinity</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">25.</td> 
+       <td><a>sqrt(x)</a> <p>Returns the square root of <b>x</b></p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">26.</td> 
+       <td><a>to_base(x,radix)</a> <p>Return type is archer. The result is returned as the base radix for <b>x</b></p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">27.</td> 
+       <td><a>truncate(x)</a> <p>Truncates the value for <b>x</b></p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">28.</td> 
+       <td><a>width_bucket(x, bound1, bound2, n)</a> <p>Returns the bin number of <b>x</b> specified bound1 and bound2 bounds and n number of buckets</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">29.</td> 
+       <td><a>width_bucket(x, bins)</a> <p>Returns the bin number of <b>x</b> according to the bins specified by the array bins</p> </td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h2>Trigonometric Functions</h2> 
+    <p>Trigonometric functions arguments are represented as radians(). Following table lists out the functions.</p> 
+    <table class="table table-bordered" style="background-color:white"> 
+     <tbody> 
+      <tr> 
+       <th style="text-align:center;">S.No</th> 
+       <th style="text-align:center;"> Functions &amp; Description</th> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">1.</td> 
+       <td><a>acos(x)</a> <p>Returns the inverse cosine value(x)</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">2.</td> 
+       <td><p><b>asin(x)</b></p> <p>Returns the inverse sine value(x)</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">3.</td> 
+       <td><p><b>atan(x)</b></p> <p>Returns the inverse tangent value(x)</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">4.</td> 
+       <td><a>atan2(y,x)</a> <p>Returns the inverse tangent value(y/x)</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">5.</td> 
+       <td><p><b>cos(x)</b></p> <p>Returns the cosine value(x)</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">6.</td> 
+       <td><a>cosh(x)</a> <p>Returns the hyperbolic cosine value(x)</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">7.</td> 
+       <td><a>sin(x)</a> <p>Returns the sine value(x)</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">8.</td> 
+       <td><p><b>tan(x)</b></p> <p>Returns the tangent value(x)</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">9.</td> 
+       <td><p><b>tanh(x)</b></p> <p>Returns the hyperbolic tangent value(x)</p> </td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h2>Bitwise Functions</h2> 
+    <p>The following table lists out the Bitwise functions.</p> 
+    <table class="table table-bordered" style="background-color:white"> 
+     <tbody> 
+      <tr> 
+       <th style="text-align:center;">S.No</th> 
+       <th style="text-align:center;">Functions &amp; Description</th> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">1.</td> 
+       <td><a>bit_count(x, bits)</a> <p>Count the number of bits</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">2.</td> 
+       <td><a>bitwise_and(x,y)</a> <p>Perform bitwise AND operation for two bits, <b>x</b> and <b>y</b></p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">3.</td> 
+       <td><a>bitwise_or(x,y)</a> <p>Bitwise OR operation between two bits <b>x, y</b></p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">4.</td> 
+       <td><a>bitwise_not(x)</a> <p>Bitwise Not operation for bit <b>x</b></p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">5.</td> 
+       <td><a>bitwise_xor(x,y)</a> <p>XOR operation for bits <b>x, y</b></p> </td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h2>String Functions</h2> 
+    <p>Following table lists out the String functions.</p> 
+    <table class="table table-bordered" style="background-color:white"> 
+     <tbody> 
+      <tr> 
+       <th style="text-align:center;">S.No</th> 
+       <th style="text-align:center;">Functions &amp; Description</th> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">1.</td> 
+       <td><a>concat(string1, ..., stringN)</a> <p>Concatenate the given strings</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">2.</td> 
+       <td><a>length(string)</a> <p>Returns the length of the given string</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">3.</td> 
+       <td><a>lower(string)</a> <p>Returns the lowercase format for the string</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">4.</td> 
+       <td><a>upper(string)</a> <p>Returns the uppercase format for the given string</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">5.</td> 
+       <td><a>lpad(string, size, padstring)</a> <p>Left padding for the given string</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">6.</td> 
+       <td><a>ltrim(string)</a> <p>Removes the leading whitespace from the string</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">7.</td> 
+       <td><a>replace(string, search, replace)</a> <p>Replaces the string value</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">8.</td> 
+       <td><a>reverse(string)</a> <p>Reverses the operation performed for the string</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">9.</td> 
+       <td><a>rpad(string, size, padstring)</a> <p>Right padding for the given string</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">10.</td> 
+       <td><a>rtrim(string)</a> <p>Removes the trailing whitespace from the string</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">11.</td> 
+       <td><a>split(string, delimiter)</a> <p>Splits the string on delimiter and returns an array of size at the most limit</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">12.</td> 
+       <td><a>split_part(string, delimiter, index)</a> <p>Splits the string on delimiter and returns the field index</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">13.</td> 
+       <td><a>strpos(string, substring)</a> <p>Returns the starting position of the substring in the string</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">14.</td> 
+       <td><a>substr(string, start)</a> <p>Returns the substring for the given string</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">15.</td> 
+       <td><a>substr(string, start, length)</a> <p>Returns the substring for the given string with the specific length</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">16.</td> 
+       <td><a>trim(string)</a> <p>Removes the leading and trailing whitespace from the string</p> </td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h2>Date and Time Functions</h2> 
+    <p>Following table lists out the Date and Time functions.</p> 
+    <table class="table table-bordered" style="background-color:white"> 
+     <tbody> 
+      <tr> 
+       <th style="text-align:center;">S.No</th> 
+       <th style="text-align:center;">Functions &amp; Description</th> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">1.</td> 
+       <td><a>current_date</a> <p>Returns the current date</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">2.</td> 
+       <td><a>current_time</a> <p>Returns the current time</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">3.</td> 
+       <td><a>current_timestamp</a> <p>Returns the current timestamp</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">4.</td> 
+       <td><a>current_timezone()</a> <p>Returns the current timezone</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">5.</td> 
+       <td><a>now()</a> <p>Returns the current date,timestamp with the timezone</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">6.</td> 
+       <td><a>localtime</a> <p>Returns the local time</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">7.</td> 
+       <td><a>localtimestamp</a> <p>Returns the local timestamp</p> </td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h2>Regular Expression Functions</h2> 
+    <p>The following table lists out the Regular Expression functions.</p> 
+    <table class="table table-bordered" style="background-color:white"> 
+     <tbody> 
+      <tr> 
+       <th style="text-align:center;">S.No</th> 
+       <th style="text-align:center;">Functions &amp; Description</th> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">1.</td> 
+       <td><a>regexp_extract_all(string, pattern)</a> <p>Returns the string matched by the regular expression for the pattern</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">2.</td> 
+       <td><a>regexp_extract_all(string, pattern, group)</a> <p>Returns the string matched by the regular expression for the pattern and the group</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">3.</td> 
+       <td><a>regexp_extract(string, pattern)</a> <p>Returns the first substring matched by the regular expression for the pattern</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">4.</td> 
+       <td><a>regexp_extract(string, pattern, group)</a> <p>Returns the first substring matched by the regular expression for the pattern and the group</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">5.</td> 
+       <td><a>regexp_like(string, pattern)</a> <p>Returns the string matches for the pattern. If the string is returned, the value will be true otherwise false</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">6.</td> 
+       <td><a>regexp_replace(string, pattern)</a> <p>Replaces the instance of the string matched for the expression with the pattern</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">7.</td> 
+       <td><a>regexp_replace(string, pattern, replacement)</a> <p>Replace the instance of the string matched for the expression with the pattern and replacement</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">8.</td> 
+       <td><a>regexp_split(string, pattern)</a> <p>Splits the regular expression for the given pattern</p> </td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h2>JSON Functions</h2> 
+    <p>The following table lists out JSON functions.</p> 
+    <table class="table table-bordered" style="background-color:white"> 
+     <tbody> 
+      <tr> 
+       <th style="text-align:center;">S.No</th> 
+       <th style="text-align:center;">Functions &amp; Description</th> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">1.</td> 
+       <td><a>json_array_contains(json, value)</a> <p>Check the value exists in a json array. If the value exists it will return true, otherwise false</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">2.</td> 
+       <td><a>json_array_get(json_array, index)</a> <p>Get the element for index in json array</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">3.</td> 
+       <td><a>json_array_length(json)</a> <p>Returns the length in json array</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">4.</td> 
+       <td><a>json_format(json)</a> <p>Returns the json structure format</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">5.</td> 
+       <td><a>json_parse(string)</a> <p>Parses the string as a json</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">6.</td> 
+       <td><a>json_size(json, json_path)</a> <p>Returns the size of the value</p> </td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h2>URL Functions</h2> 
+    <p>The following table lists out the URL functions.</p> 
+    <table class="table table-bordered" style="background-color:white"> 
+     <tbody> 
+      <tr> 
+       <th style="text-align:center;">S.No</th> 
+       <th style="text-align:center;">Functions &amp; Description</th> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">1.</td> 
+       <td><a>url_extract_host(url)</a> <p>Returns the URL’s host</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">2.</td> 
+       <td><a>url_extract_path(url)</a> <p>Returns the URL’s path</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">3.</td> 
+       <td><a>url_extract_port(url)</a> <p>Returns the URL’s port</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">4.</td> 
+       <td><a>url_extract_protocol(url)</a> <p>Returns the URL’s protocol</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">5.</td> 
+       <td><a>url_extract_query(url)</a> <p>Returns the URL’s query string</p> </td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h2>Aggregate Functions</h2> 
+    <p>The following table lists out the Aggregate functions.</p> 
+    <table class="table table-bordered" style="background-color:white"> 
+     <tbody> 
+      <tr> 
+       <th style="text-align:center;">S.No</th> 
+       <th style="text-align:center;">Functions &amp; Description</th> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">1.</td> 
+       <td><p><b>avg(x)</b></p> <p>Returns average for the given value</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">2.</td> 
+       <td><a>min(x,n)</a> <p>Returns the minimum value from two values</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">3.</td> 
+       <td><a>max(x,n)</a> <p>Returns the maximum value from two values</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">4.</td> 
+       <td><a>sum(x)</a> <p>Returns the sum of value</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">5.</td> 
+       <td><a>count(*)</a> <p>Returns the number of input rows</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">6.</td> 
+       <td><a>count(x)</a> <p>Returns the count of input values</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">7.</td> 
+       <td><a>checksum(x)</a> <p>Returns the checksum for <b>x</b></p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">8.</td> 
+       <td><a>arbitrary(x)</a> <p>Returns the arbitrary value for <b>x</b></p> </td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h2>Color Functions</h2> 
+    <p>Following table lists out the Color functions.</p> 
+    <table class="table table-bordered" style="background-color:white"> 
+     <tbody> 
+      <tr> 
+       <th style="text-align:center;">S.No</th> 
+       <th style="text-align:center;">Functions &amp; Description</th> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">1.</td> 
+       <td><a>bar(x, width)</a> <p>Renders a single bar using rgb low_color and high_color</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">2.</td> 
+       <td><a>bar(x, width, low_color, high_color)</a> <p>Renders a single bar for the specified width</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">3.</td> 
+       <td><a>color(string)</a> <p>Returns the color value for the entered string</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">4.</td> 
+       <td><a>render(x, color)</a> <p>Renders value x using the specific color using ANSI color codes</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">5.</td> 
+       <td><a>render(b)</a> <p>Accepts boolean value b and renders a green true or a red false using ANSI color codes</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">6.</td> 
+       <td><p><b>rgb(red, green, blue)</b></p> <p>Returns a color value capturing the RGB value of three component color values supplied as int parameters ranging from 0 to 255</p> </td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h2>Array Functions</h2> 
+    <p>The following table lists out the Array functions.</p> 
+    <table class="table table-bordered" style="background-color:white"> 
+     <tbody> 
+      <tr> 
+       <th style="text-align:center;">S.No</th> 
+       <th style="text-align:center;">Functions &amp; Description</th> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">1.</td> 
+       <td><a>array_max(x)</a> <p>Finds the max element in an array</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">2.</td> 
+       <td><a>array_min(x)</a> <p>Finds the min element in an array</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">3.</td> 
+       <td><a>array_sort(x)</a> <p>Sorts the elements in an array</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">4.</td> 
+       <td><a>array_remove(x,element)</a> <p>Removes the specific element from an array</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">5.</td> 
+       <td><a>concat(x,y)</a> <p>Concatenates two arrays</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">6.</td> 
+       <td><a>contains(x,element)</a> <p>Finds the given elements in an array. True will be returned if it is present, otherwise false</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">7.</td> 
+       <td><a>array_position(x,element)</a> <p>Find the position of the given element in an array</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">8.</td> 
+       <td><a>array_intersect(x,y)</a> <p>Performs an intersection between two arrays</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">9.</td> 
+       <td><a>element_at(array,index)</a> <p>Returns the array element position</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">10.</td> 
+       <td><a>slice(x,start,length)</a> <p>Slices the array elements with the specific length</p> </td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h2>Teradata Functions</h2> 
+    <p>The following table lists out Teradata functions.</p> 
+    <table class="table table-bordered" style="background-color:white"> 
+     <tbody> 
+      <tr> 
+       <th style="text-align:center;">S.No</th> 
+       <th style="text-align:center;">Functions &amp; Description</th> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">1.</td> 
+       <td><a>index(string,substring)</a> <p>Returns the index of the string with the given substring</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">2.</td> 
+       <td><a>substring(string,start)</a> <p>Returns the substring of the given string. You can specify the start index here</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">3.</td> 
+       <td><a>substring(string,start,length)</a> <p>Returns the substring of the given string for the specific start index and length of the string</p> </td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h1>Apache Presto - MySQL Connector</h1> 
+    <p>The MySQL connector is used to query an external MySQL database.</p> 
+    <h3>Prerequisites</h3> 
+    <p>MySQL server installation.</p> 
+    <h2>Configuration Settings</h2> 
+    <p>Hopefully you have installed mysql server on your machine. To enable mysql properties on Presto server, you must create a file <b>“mysql.properties”</b> in <b>“etc/catalog”</b> directory. Issue the following command to create a mysql.properties file.</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ cd etc 
+$ cd catalog 
+$ vi mysql.properties   
+
+connector.name = mysql 
+connection-url = jdbc:mysql://localhost:3306 
+connection-user = root 
+connection-password = pwd 
+</pre> 
+    <p>Save the file and quit the terminal. In the above file, you must enter your mysql password in connection-password field.</p> 
+    <h2>Create Database in MySQL Server</h2> 
+    <p>Open MySQL server and create a database using the following command.</p> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+create database tutorials
+</pre> 
+    <p>Now you have created “tutorials” database in the server. To enable database type, use the command “use tutorials” in the query window.</p> 
+    <h2>Create Table</h2> 
+    <p>Let’s create a simple table on “tutorials” database.</p> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+create table author(auth_id int not null, auth_name varchar(50),topic varchar(100))
+</pre> 
+    <h2>Insert Table</h2> 
+    <p>After creating a table, insert three records using the following query.</p> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+insert into author values(1,'Doug Cutting','Hadoop') 
+insert into author values(2,’James Gosling','java') 
+insert into author values(3,'Dennis Ritchie’,'C')
+</pre> 
+    <h2>Select Records</h2> 
+    <p>To retrieve all the records, type the following query.</p> 
+    <h3>Query</h3> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+select * from author
+</pre> 
+    <h3>Result</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+auth_id    auth_name      topic  
+1        Doug Cutting     Hadoop 
+2        James Gosling    java 
+3        Dennis Ritchie     C 
+</pre> 
+    <p>As of now, you have queried data using MySQL server. Let’s connect Mysql storage plugin to Presto server.</p> 
+    <h2>Connect Presto CLI</h2> 
+    <p>Type the following command to connect MySql plugin on Presto CLI.</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+./presto --server localhost:8080 --catalog mysql --schema tutorials 
+</pre> 
+    <p>You will receive the following response.</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+presto:tutorials&gt; 
+</pre> 
+    <p>Here <b>“tutorials”</b> refers to schema in mysql server.</p> 
+    <h2>List Schemas</h2> 
+    <p>To list out all the schemas in mysql, type the following query in Presto server.</p> 
+    <h3>Query</h3> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+presto:tutorials&gt; show schemas from mysql;
+</pre> 
+    <h3>Result</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+      Schema 
+-------------------- 
+ information_schema 
+ performance_schema 
+ sys 
+ tutorials
+</pre> 
+    <p>From this result, we can conclude the first three schemas as predefined and the last one as created by yourself.</p> 
+    <h2>List Tables from Schema</h2> 
+    <p>Following query lists out all the tables in tutorials schema.</p> 
+    <h3>Query</h3> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+presto:tutorials&gt; show tables from mysql.tutorials; 
+</pre> 
+    <h3>Result</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+  Table 
+-------- 
+ author
+</pre> 
+    <p>We have created only one table in this schema. If you have created multiple tables, it will list out all the tables.</p> 
+    <h2>Describe Table</h2> 
+    <p>To describe the table fields, type the following query.</p> 
+    <h3>Query</h3> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+presto:tutorials&gt; describe mysql.tutorials.author;
+</pre> 
+    <h3>Result</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+  Column   |     Type     | Comment 
+-----------+--------------+--------- 
+ auth_id   | integer      | 
+ auth_name | varchar(50)  | 
+ topic     | varchar(100) |
+</pre> 
+    <h2>Show Columns from Table</h2> 
+    <h3>Query</h3> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+presto:tutorials&gt; show columns from mysql.tutorials.author; 
+</pre> 
+    <h3>Result</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+ Column    |     Type     | Comment 
+-----------+--------------+--------- 
+ auth_id   | integer      | 
+ auth_name | varchar(50)  | 
+ topic     | varchar(100) |
+</pre> 
+    <h2>Access Table Records</h2> 
+    <p>To fetch all the records from mysql table, issue the following query.</p> 
+    <h3>Query</h3> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+presto:tutorials&gt; select * from mysql.tutorials.author; 
+</pre> 
+    <h3>Result</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+auth_id  |   auth_name    | topic 
+---------+----------------+-------- 
+       1 | Doug Cutting   | Hadoop 
+       2 | James Gosling  | java 
+       3 | Dennis Ritchie | C
+</pre> 
+    <p>From this result, you can retrieve mysql server records in Presto.</p> 
+    <h2>Create Table Using as Command</h2> 
+    <p>Mysql connector doesn’t support create table query but you can create a table using as command.</p> 
+    <h3>Query</h3> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+presto:tutorials&gt; create table mysql.tutorials.sample as 
+select * from mysql.tutorials.author; 
+</pre> 
+    <h3>Result</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+CREATE TABLE: 3 rows
+</pre> 
+    <p>You can’t insert rows directly because this connector has some limitations. It cannot support the following queries −</p> 
+    <ul class="list" style="-webkit-padding-start:5px"> 
+     <li>create</li> 
+     <li>insert</li> 
+     <li>update</li> 
+     <li>delete</li> 
+     <li>drop</li> 
+    </ul> 
+    <p>To view the records in the newly created table, type the following query.</p> 
+    <h3>Query</h3> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+presto:tutorials&gt; select * from mysql.tutorials.sample; 
+</pre> 
+    <h3>Result</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+auth_id  |   auth_name    | topic 
+---------+----------------+-------- 
+       1 | Doug Cutting   | Hadoop 
+       2 | James Gosling  | java 
+       3 | Dennis Ritchie | C
+</pre> 
+    <h1>Apache Presto - JMX Connector</h1> 
+    <p>Java Management Extensions (JMX) gives information about the Java Virtual Machine and software running inside JVM. The JMX connector is used to query JMX information in Presto server.</p> 
+    <p>As we have already enabled <b>“jmx.properties”</b> file under <b>“etc/catalog”</b> directory. Now connect Prest CLI to enable JMX plugin.</p> 
+    <h2>Presto CLI</h2> 
+    <h3>Query</h3> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+$ ./presto --server localhost:8080 --catalog jmx --schema jmx 
+</pre> 
+    <h3>Result</h3> 
+    <p>You will receive the following response.</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+presto:jmx&gt; 
+</pre> 
+    <h2>JMX Schema</h2> 
+    <p>To list out all the schemas in “jmx”, type the following query.</p> 
+    <h3>Query</h3> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+presto:jmx&gt; show schemas from jmx; 
+</pre> 
+    <h3>Result</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+      Schema 
+-------------------- 
+ information_schema  
+ current
+</pre> 
+    <h2>Show Tables</h2> 
+    <p>To view the tables in the “current” schema, use the following command.</p> 
+    <h3>Query 1</h3> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+presto:jmx&gt; show tables from jmx.current; 
+</pre> 
+    <h3>Result</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+                                    Table                   
+------------------------------------------------------------------------------
+ com.facebook.presto.execution.scheduler:name = nodescheduler
+ com.facebook.presto.execution:name = queryexecution
+ com.facebook.presto.execution:name = querymanager
+ com.facebook.presto.execution:name = remotetaskfactory
+ com.facebook.presto.execution:name = taskexecutor
+ com.facebook.presto.execution:name = taskmanager
+ com.facebook.presto.execution:type = queryqueue,name = global,expansion = global
+ ………………
+ ……………….
+</pre> 
+    <h3>Query 2</h3> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+presto:jmx&gt; select * from jmx.current.”java.lang:type = compilation"; 
+</pre> 
+    <h3>Result</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+node               | compilationtimemonitoringsupported |      name   |         objectname         | totalcompilationti
+--------------------------------------+------------------------------------+--------------------------------+----------------------------+-------------------
+ffffffff-ffff-ffff-ffff-ffffffffffff | true | HotSpot 64-Bit Tiered Compilers | java.lang:type=Compilation |       1276
+</pre> 
+    <h3>Query 3</h3> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+presto:jmx&gt; select * from jmx.current."com.facebook.presto.server:name = taskresource";
+</pre> 
+    <h3>Result</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+ node                 | readfromoutputbuffertime.alltime.count 
+ | readfromoutputbuffertime.alltime.max | readfromoutputbuffertime.alltime.maxer
+ --------------------------------------+---------------------------------------+--------------------------------------+--------------------------------------- 
+ ffffffff-ffff-ffff-ffff-ffffffffffff |                                   92.0 |                          1.009106149 | 
+</pre> 
+    <h1>Apache Presto - HIVE Connector</h1> 
+    <p>The Hive connector allows querying data stored in a Hive data warehouse.</p> 
+    <h3>Prerequisites</h3> 
+    <ul class="list" style="-webkit-padding-start:5px"> 
+     <li>Hadoop</li> 
+     <li>Hive</li> 
+    </ul> 
+    <p>Hopefully you have installed Hadoop and Hive on your machine. Start all the services one by one in the new terminal. Then, start hive metastore using the following command,</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+hive --service metastore
+</pre> 
+    <p>Presto uses Hive metastore service to get the hive table’s details.</p> 
+    <h2>Configuration Settings</h2> 
+    <p>Create a file <b>“hive.properties”</b> under <b>“etc/catalog”</b> directory. Use the following command.</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ cd etc 
+$ cd catalog 
+$ vi hive.properties  
+
+connector.name = hive-cdh4 
+hive.metastore.uri = thrift://localhost:9083
+</pre> 
+    <p>After making all the changes, save the file and quit the terminal.</p> 
+    <h2>Create Database</h2> 
+    <p>Create a database in Hive using the following query −</p> 
+    <h3>Query</h3> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+hive&gt; CREATE SCHEMA tutorials; 
+</pre> 
+    <p>After the database is created, you can verify it using the <b>“show databases”</b> command.</p> 
+    <h2>Create Table</h2> 
+    <p>Create Table is a statement used to create a table in Hive. For example, use the following query.</p> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+hive&gt; create table author(auth_id int, auth_name varchar(50), 
+topic varchar(100) STORED AS SEQUENCEFILE;
+</pre> 
+    <h2>Insert Table</h2> 
+    <p>Following query is used to insert records in hive’s table.</p> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+hive&gt; insert into table author values (1,’ Doug Cutting’,Hadoop),
+(2,’ James Gosling’,java),(3,’ Dennis Ritchie’,C);
+</pre> 
+    <h2>Start Presto CLI</h2> 
+    <p>You can start Presto CLI to connect Hive storage plugin using the following command.</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ ./presto --server localhost:8080 --catalog hive —schema tutorials; 
+</pre> 
+    <p>You will receive the following response.</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+presto:tutorials &gt;
+</pre> 
+    <h2>List Schemas</h2> 
+    <p>To list out all the schemas in Hive connector, type the following command.</p> 
+    <h3>Query</h3> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+presto:tutorials &gt; show schemas from hive;
+</pre> 
+    <h3>Result</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+default  
+
+tutorials 
+</pre> 
+    <h2>List Tables</h2> 
+    <p>To list out all the tables in “tutorials” schema, use the following query.</p> 
+    <h3>Query</h3> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+presto:tutorials &gt; show tables from hive.tutorials; 
+</pre> 
+    <h3>Result</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+author
+</pre> 
+    <h2>Fetch Table</h2> 
+    <p>Following query is used to fetch all the records from hive’s table.</p> 
+    <h3>Query</h3> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+presto:tutorials &gt; select * from hive.tutorials.author; 
+</pre> 
+    <h3>Result</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+auth_id  |   auth_name    | topic 
+---------+----------------+-------- 
+       1 | Doug Cutting   | Hadoop 
+       2 | James Gosling  | java 
+       3 | Dennis Ritchie | C
+</pre> 
+    <h1>Apache Presto - KAFKA Connector</h1> 
+    <p>The Kafka Connector for Presto allows to access data from Apache Kafka using Presto.</p> 
+    <h3>Prerequisites</h3> 
+    <p>Download and install the latest version of the following Apache projects.</p> 
+    <ul class="list" style="-webkit-padding-start:5px"> 
+     <li>Apache ZooKeeper</li> 
+     <li>Apache Kafka</li> 
+    </ul> 
+    <h2>Start ZooKeeper</h2> 
+    <p>Start ZooKeeper server using the following command.</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ bin/zookeeper-server-start.sh config/zookeeper.properties
+</pre> 
+    <p>Now, ZooKeeper starts port on 2181.</p> 
+    <h2>Start Kafka</h2> 
+    <p>Start Kafka in another terminal using the following command.</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ bin/kafka-server-start.sh config/server.properties
+</pre> 
+    <p>After kafka starts, it uses the port number 9092.</p> 
+    <h2>TPCH Data</h2> 
+    <h3>Download tpch-kafka</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$  curl -o kafka-tpch 
+https://repo1.maven.org/maven2/de/softwareforge/kafka_tpch_0811/1.0/kafka_tpch_ 
+0811-1.0.sh 
+</pre> 
+    <p>Now you have downloaded the loader from Maven central using the above command. You will get a similar response as the following.</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+% Total    % Received % Xferd  Average Speed   Time    Time     Time  Current 
+                                 Dload  Upload   Total   Spent    Left  Speed 
+  0     0    0     0    0     0      0      0 --:--:--  0:00:01 --:--:--     0  
+  5 21.6M    5 1279k    0     0  83898      0  0:04:30  0:00:15  0:04:15  129k
+  6 21.6M    6 1407k    0     0  86656      0  0:04:21  0:00:16  0:04:05  131k  
+ 24 21.6M   24 5439k    0     0   124k      0  0:02:57  0:00:43  0:02:14  175k 
+ 24 21.6M   24 5439k    0     0   124k      0  0:02:58  0:00:43  0:02:15  160k 
+ 25 21.6M   25 5736k    0     0   128k      0  0:02:52  0:00:44  0:02:08  181k 
+ ………………………..
+</pre> 
+    <p>Then, make it executable using the following command,</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ chmod 755 kafka-tpch
+</pre> 
+    <h3>Run tpch-kafka</h3> 
+    <p>Run the kafka-tpch program to preload a number of topics with tpch data using the following command.</p> 
+    <h3>Query</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ ./kafka-tpch load --brokers localhost:9092 --prefix tpch. --tpch-type tiny 
+</pre> 
+    <h3>Result</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+2016-07-13T16:15:52.083+0530 INFO main io.airlift.log.Logging Logging 
+to stderr
+2016-07-13T16:15:52.124+0530 INFO main de.softwareforge.kafka.LoadCommand
+Processing tables: [customer, orders, lineitem, part, partsupp, supplier,
+nation, region]
+2016-07-13T16:15:52.834+0530 INFO pool-1-thread-1
+de.softwareforge.kafka.LoadCommand Loading table 'customer' into topic 'tpch.customer'...
+2016-07-13T16:15:52.834+0530 INFO pool-1-thread-2
+de.softwareforge.kafka.LoadCommand Loading table 'orders' into topic 'tpch.orders'...
+2016-07-13T16:15:52.834+0530 INFO pool-1-thread-3
+de.softwareforge.kafka.LoadCommand Loading table 'lineitem' into topic 'tpch.lineitem'...
+2016-07-13T16:15:52.834+0530 INFO pool-1-thread-4
+de.softwareforge.kafka.LoadCommand Loading table 'part' into topic 'tpch.part'...
+………………………
+……………………….
+</pre> 
+    <p>Now, Kafka tables customers,orders,supplier, etc., are loaded using tpch.</p> 
+    <h2>Add Config Settings</h2> 
+    <p>Let’s add the following Kafka connector configuration settings on Presto server.</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+connector.name = kafka  
+
+kafka.nodes = localhost:9092  
+
+kafka.table-names = tpch.customer,tpch.orders,tpch.lineitem,tpch.part,tpch.partsupp, 
+tpch.supplier,tpch.nation,tpch.region  
+
+kafka.hide-internal-columns = false 
+</pre> 
+    <p>In the above configuration, Kafka tables are loaded using Kafka-tpch program.</p> 
+    <h2>Start Presto CLI</h2> 
+    <p>Start Presto CLI using the following command,</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ ./presto --server localhost:8080 --catalog kafka —schema tpch;
+</pre> 
+    <p>Here <b>“tpch"</b> is a schema for Kafka connector and you will receive a response as the following.</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+presto:tpch&gt;
+</pre> 
+    <h2>List Tables</h2> 
+    <p>Following query lists out all the tables in <b>“tpch”</b> schema.</p> 
+    <h3>Query</h3> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+presto:tpch&gt; show tables;
+</pre> 
+    <h3>Result</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+  Table 
+---------- 
+ customer 
+ lineitem 
+ nation 
+ orders
+ part 
+ partsupp 
+ region 
+ supplier 
+</pre> 
+    <h2>Describe Customer Table</h2> 
+    <p>Following query describes <b>“customer”</b> table.</p> 
+    <h3>Query</h3> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+presto:tpch&gt; describe customer; 
+</pre> 
+    <h3>Result</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+  Column           |  Type   |                   Comment 
+-------------------+---------+--------------------------------------------- 
+ _partition_id     | bigint  | Partition Id 
+ _partition_offset | bigint  | Offset for the message within the partition 
+ _segment_start    | bigint  | Segment start offset 
+ _segment_end      | bigint  | Segment end offset 
+ _segment_count    | bigint  | Running message count per segment 
+ _key              | varchar | Key text 
+ _key_corrupt      | boolean | Key data is corrupt 
+ _key_length       | bigint  | Total number of key bytes 
+ _message          | varchar | Message text 
+ _message_corrupt  | boolean | Message data is corrupt 
+ _message_length   | bigint  | Total number of message bytes 
+</pre> 
+    <h1>Apache Presto - JDBC Interface</h1> 
+    <p>Presto’s JDBC interface is used to access Java application.</p> 
+    <h3>Prerequisites</h3> 
+    <p>Install presto-jdbc-0.150.jar</p> 
+    <p>You can download the JDBC jar file by visiting the following link,</p> 
+    <p><a target="_blank" rel="nofollow">https://repo1.maven.org/maven2/com/facebook/presto/presto-jdbc/0.150/</a></p> 
+    <p>After the jar file has been downloaded, add it to the class path of your Java application.</p> 
+    <h2>Create a Simple Application</h2> 
+    <p>Let’s create a simple java application using JDBC interface.</p> 
+    <p>Coding − PrestoJdbcSample.java</p> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+import java.sql.*; 
+import com.facebook.presto.jdbc.PrestoDriver; 
+
+//import presto jdbc driver packages here.  
+public class PrestoJdbcSample {  
+   public static void main(String[] args) {  
+      Connection connection = null; 
+      Statement statement = null;  
+      try { 
+         
+         Class.forName("com.facebook.presto.jdbc.PrestoDriver");  
+         connection = DriverManager.getConnection(
+         "jdbc:presto://localhost:8080/mysql/tutorials", "tutorials", “"); 
+         
+         //connect mysql server tutorials database here 
+         statement = connection.createStatement(); 
+         String sql;  
+         sql = "select auth_id, auth_name from mysql.tutorials.author”; 
+        
+         //select mysql table author table two columns  
+         ResultSet resultSet = statement.executeQuery(sql);  
+         while(resultSet.next()){  
+            int id  = resultSet.getInt("auth_id"); 
+            String name = resultSet.getString(“auth_name");  
+            System.out.print("ID: " + id + ";\nName: " + name + "\n"); 
+         }  
+         
+         resultSet.close(); 
+         statement.close(); 
+         connection.close(); 
+         
+      }catch(SQLException sqlException){ 
+         sqlException.printStackTrace(); 
+      }catch(Exception exception){ 
+         exception.printStackTrace(); 
+      } 
+   } 
+}
+</pre> 
+    <p>Save the file and quit the application. Now, start Presto server in one terminal and open a new terminal to compile and execute the result. Following are the steps −</p> 
+    <h3>Compilation</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+~/Workspace/presto/presto-jdbc $ javac -cp presto-jdbc-0.149.jar  PrestoJdbcSample.java
+</pre> 
+    <h3>Execution</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+~/Workspace/presto/presto-jdbc $ java -cp .:presto-jdbc-0.149.jar  PrestoJdbcSample
+</pre> 
+    <h3>Output</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+INFO: Logging initialized @146ms  
+ID: 1; 
+Name: Doug Cutting 
+ID: 2; 
+Name: James Gosling 
+ID: 3; 
+Name: Dennis Ritchie 
+</pre> 
+    <h1>Apache Presto - Custom Function Application</h1> 
+    <p>Create a Maven project to develop Presto custom function.</p> 
+    <h2>SimpleFunctionsFactory.java</h2> 
+    <p>Create SimpleFunctionsFactory class to implement FunctionFactory interface.</p> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+package com.tutorialevaluation.simple.functions;  
+
+import com.facebook.presto.metadata.FunctionFactory; 
+import com.facebook.presto.metadata.FunctionListBuilder; 
+import com.facebook.presto.metadata.SqlFunction; 
+import com.facebook.presto.spi.type.TypeManager;  
+import java.util.List;  
+
+public class SimpleFunctionFactory implements FunctionFactory { 
+   
+   private final TypeManager typeManager;  
+   public SimpleFunctionFactory(TypeManager typeManager) { 
+      this.typeManager = typeManager; 
+   }  
+    @Override 
+    
+   public List&lt;SqlFunction&gt; listFunctions() { 
+      return new FunctionListBuilder(typeManager) 
+      .scalar(SimpleFunctions.class) 
+      .getFunctions(); 
+   } 
+}
+</pre> 
+    <h2>SimpleFunctionsPlugin.java</h2> 
+    <p>Create a SimpleFunctionsPlugin class to implement Plugin interface.</p> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+package com.tutorialevaluation.simple.functions;  
+
+import com.facebook.presto.metadata.FunctionFactory; 
+import com.facebook.presto.spi.Plugin; 
+import com.facebook.presto.spi.type.TypeManager; 
+import com.google.common.collect.ImmutableList;  
+import javax.inject.Inject; 
+import java.util.List; 
+import static java.util.Objects.requireNonNull;  
+
+public class SimpleFunctionsPlugin implements Plugin {  
+   private TypeManager typeManager; 
+   @Inject 
+   
+   public void setTypeManager(TypeManager typeManager) { 
+      this.typeManager = requireNonNull(typeManager, "typeManager is null”); 
+      //Inject TypeManager class here 
+   }  
+   @Override 
+   
+   public &lt;T&gt; List&lt;T&gt; getServices(Class&lt;T&gt; type){ 
+      if (type == FunctionFactory.class) { 
+         return ImmutableList.of(type.cast(new SimpleFunctionFactory(typeManager))); 
+      } 
+      return ImmutableList.of(); 
+   } 
+}
+</pre> 
+    <h2>Add Resource File</h2> 
+    <p>Create a resource file which is specified in the implementation package.</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+(com.tutorialevaluation.simple.functions.SimpleFunctionsPlugin)
+</pre> 
+    <p>Now move to the resource file location @ /path/to/resource/</p> 
+    <p>Then add the changes,</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+com.facebook.presto.spi.Plugin 
+</pre> 
+    <h2>pom.xml</h2> 
+    <p>Add the following dependencies to pom.xml file.</p> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+&lt;?xml version = "1.0"?&gt; 
+&lt;project xmlns = "http://maven.apache.org/POM/4.0.0"  
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+ xsi:schemaLocation = "http://maven.apache.org/POM/4.0.0  
+    http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;  
+   
+   &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt; 
+   &lt;groupId&gt;com.tutorialevaluation.simple.functions&lt;/groupId&gt; 
+   &lt;artifactId&gt;presto-simple-functions&lt;/artifactId&gt;  
+   &lt;packaging&gt;jar&lt;/packaging&gt;  
+   &lt;version&gt;1.0&lt;/version&gt;
+   &lt;name&gt;presto-simple-functions&lt;/name&gt;
+   &lt;description&gt;Simple test functions for Presto&lt;/description&gt; 
+   &lt;properties&gt; 
+      &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+   &lt;/properties&gt;  
+   &lt;dependencies&gt; 
+      &lt;dependency&gt; 
+         &lt;groupId&gt;com.facebook.presto&lt;/groupId&gt; 
+         &lt;artifactId&gt;presto-spi&lt;/artifactId&gt;
+         &lt;version&gt;0.149&lt;/version&gt; 
+      &lt;/dependency&gt;  
+      &lt;dependency&gt; 
+         &lt;groupId&gt;com.facebook.presto&lt;/groupId&gt; 
+         &lt;artifactId&gt;presto-main&lt;/artifactId&gt; 
+         &lt;version&gt;0.149&lt;/version&gt; 
+      &lt;/dependency&gt;  
+      &lt;dependency&gt; 
+         &lt;groupId&gt;javax.inject&lt;/groupId&gt; 
+         &lt;artifactId&gt;javax.inject&lt;/artifactId&gt; 
+         &lt;version&gt;1&lt;/version&gt; 
+      &lt;/dependency&gt;  
+      &lt;dependency&gt; 
+         &lt;groupId&gt;com.google.guava&lt;/groupId&gt; 
+         &lt;artifactId&gt;guava&lt;/artifactId&gt; 
+         &lt;version&gt;19.0&lt;/version&gt; 
+      &lt;/dependency&gt; 
+   &lt;/dependencies&gt;  
+   &lt;build&gt; 
+      &lt;finalName&gt;presto-simple-functions&lt;/finalName&gt;  
+      &lt;plugins&gt;  
+      &lt;!-- Make this jar executable --&gt; 
+         &lt;plugin&gt; 
+            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt; 
+            &lt;artifactId&gt;maven-jar-plugin&lt;/artifactId&gt; 
+            &lt;version&gt;2.3.2&lt;/version&gt; 
+         &lt;/plugin&gt; 
+      &lt;/plugins&gt; 
+   &lt;/build&gt; 
+&lt;/project&gt;
+</pre> 
+    <h2>SimpleFunctions.java</h2> 
+    <p>Create SimpleFunctions class using Presto attributes.</p> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+package com.tutorialevaluation.simple.functions;  
+
+import com.facebook.presto.operator.Description; 
+import com.facebook.presto.operator.scalar.ScalarFunction; 
+import com.facebook.presto.operator.scalar.StringFunctions; 
+import com.facebook.presto.spi.type.StandardTypes; 
+import com.facebook.presto.type.LiteralParameters; 
+import com.facebook.presto.type.SqlType;  
+
+public final class SimpleFunctions { 
+   private SimpleFunctions() { 
+   }  
+    
+   @Description("Returns summation of two numbers") 
+   @ScalarFunction(“mysum") 
+   //function name 
+   @SqlType(StandardTypes.BIGINT) 
+    
+   public static long sum(@SqlType(StandardTypes.BIGINT) long num1, 
+   @SqlType(StandardTypes.BIGINT) long num2) { 
+      return num1 + num2; 
+   } 
+}
+</pre> 
+    <p>After the application is created compile and execute the application. It will produce the JAR file. Copy the file and move the JAR file into the target Presto server plugin directory.</p> 
+    <h3>Compilation</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+mvn compile
+</pre> 
+    <h3>Execution</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+mvn package
+</pre> 
+    <p>Now restart Presto server and connect Presto client. Then execute the custom function application as explained below,</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ ./presto --catalog mysql --schema default
+</pre> 
+    <h3>Query</h3> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+presto:default&gt; select mysum(10,10);
+</pre> 
+    <h3>Result</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+ _col0  
+------- 
+  20 
+</pre> 
+    <!-- PRINTING ENDS HERE --> 
+   </div> 
+  </div>
+ </body>
+</html>

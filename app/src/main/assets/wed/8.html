@@ -1,0 +1,178 @@
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8">
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="theme/css/style-min.css"> 
+  <style>img{display: inline; height: auto; max-width: 100%;}</style>
+ </head>
+ <body>
+  <div class="content"> 
+   <div class="col-md-7 middle-col"> 
+    <h1>Apache Presto - MySQL Connector</h1> 
+    <div class="clearer"></div> 
+    <p>The MySQL connector is used to query an external MySQL database.</p> 
+    <h3>Prerequisites</h3> 
+    <p>MySQL server installation.</p> 
+    <h2>Configuration Settings</h2> 
+    <p>Hopefully you have installed mysql server on your machine. To enable mysql properties on Presto server, you must create a file <b>“mysql.properties”</b> in <b>“etc/catalog”</b> directory. Issue the following command to create a mysql.properties file.</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ cd etc 
+$ cd catalog 
+$ vi mysql.properties   
+
+connector.name = mysql 
+connection-url = jdbc:mysql://localhost:3306 
+connection-user = root 
+connection-password = pwd 
+</pre> 
+    <p>Save the file and quit the terminal. In the above file, you must enter your mysql password in connection-password field.</p> 
+    <h2>Create Database in MySQL Server</h2> 
+    <p>Open MySQL server and create a database using the following command.</p> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+create database tutorials
+</pre> 
+    <p>Now you have created “tutorials” database in the server. To enable database type, use the command “use tutorials” in the query window.</p> 
+    <h2>Create Table</h2> 
+    <p>Let’s create a simple table on “tutorials” database.</p> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+create table author(auth_id int not null, auth_name varchar(50),topic varchar(100))
+</pre> 
+    <h2>Insert Table</h2> 
+    <p>After creating a table, insert three records using the following query.</p> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+insert into author values(1,'Doug Cutting','Hadoop') 
+insert into author values(2,’James Gosling','java') 
+insert into author values(3,'Dennis Ritchie’,'C')
+</pre> 
+    <h2>Select Records</h2> 
+    <p>To retrieve all the records, type the following query.</p> 
+    <h3>Query</h3> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+select * from author
+</pre> 
+    <h3>Result</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+auth_id    auth_name      topic  
+1        Doug Cutting     Hadoop 
+2        James Gosling    java 
+3        Dennis Ritchie     C 
+</pre> 
+    <p>As of now, you have queried data using MySQL server. Let’s connect Mysql storage plugin to Presto server.</p> 
+    <h2>Connect Presto CLI</h2> 
+    <p>Type the following command to connect MySql plugin on Presto CLI.</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+./presto --server localhost:8080 --catalog mysql --schema tutorials 
+</pre> 
+    <p>You will receive the following response.</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+presto:tutorials&gt; 
+</pre> 
+    <p>Here <b>“tutorials”</b> refers to schema in mysql server.</p> 
+    <h2>List Schemas</h2> 
+    <p>To list out all the schemas in mysql, type the following query in Presto server.</p> 
+    <h3>Query</h3> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+presto:tutorials&gt; show schemas from mysql;
+</pre> 
+    <h3>Result</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+      Schema 
+-------------------- 
+ information_schema 
+ performance_schema 
+ sys 
+ tutorials
+</pre> 
+    <p>From this result, we can conclude the first three schemas as predefined and the last one as created by yourself.</p> 
+    <h2>List Tables from Schema</h2> 
+    <p>Following query lists out all the tables in tutorials schema.</p> 
+    <h3>Query</h3> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+presto:tutorials&gt; show tables from mysql.tutorials; 
+</pre> 
+    <h3>Result</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+  Table 
+-------- 
+ author
+</pre> 
+    <p>We have created only one table in this schema. If you have created multiple tables, it will list out all the tables.</p> 
+    <h2>Describe Table</h2> 
+    <p>To describe the table fields, type the following query.</p> 
+    <h3>Query</h3> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+presto:tutorials&gt; describe mysql.tutorials.author;
+</pre> 
+    <h3>Result</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+  Column   |     Type     | Comment 
+-----------+--------------+--------- 
+ auth_id   | integer      | 
+ auth_name | varchar(50)  | 
+ topic     | varchar(100) |
+</pre> 
+    <h2>Show Columns from Table</h2> 
+    <h3>Query</h3> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+presto:tutorials&gt; show columns from mysql.tutorials.author; 
+</pre> 
+    <h3>Result</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+ Column    |     Type     | Comment 
+-----------+--------------+--------- 
+ auth_id   | integer      | 
+ auth_name | varchar(50)  | 
+ topic     | varchar(100) |
+</pre> 
+    <h2>Access Table Records</h2> 
+    <p>To fetch all the records from mysql table, issue the following query.</p> 
+    <h3>Query</h3> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+presto:tutorials&gt; select * from mysql.tutorials.author; 
+</pre> 
+    <h3>Result</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+auth_id  |   auth_name    | topic 
+---------+----------------+-------- 
+       1 | Doug Cutting   | Hadoop 
+       2 | James Gosling  | java 
+       3 | Dennis Ritchie | C
+</pre> 
+    <p>From this result, you can retrieve mysql server records in Presto.</p> 
+    <h2>Create Table Using as Command</h2> 
+    <p>Mysql connector doesn’t support create table query but you can create a table using as command.</p> 
+    <h3>Query</h3> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+presto:tutorials&gt; create table mysql.tutorials.sample as 
+select * from mysql.tutorials.author; 
+</pre> 
+    <h3>Result</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+CREATE TABLE: 3 rows
+</pre> 
+    <p>You can’t insert rows directly because this connector has some limitations. It cannot support the following queries −</p> 
+    <ul class="list" style="-webkit-padding-start:5px"> 
+     <li>create</li> 
+     <li>insert</li> 
+     <li>update</li> 
+     <li>delete</li> 
+     <li>drop</li> 
+    </ul> 
+    <p>To view the records in the newly created table, type the following query.</p> 
+    <h3>Query</h3> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+presto:tutorials&gt; select * from mysql.tutorials.sample; 
+</pre> 
+    <h3>Result</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+auth_id  |   auth_name    | topic 
+---------+----------------+-------- 
+       1 | Doug Cutting   | Hadoop 
+       2 | James Gosling  | java 
+       3 | Dennis Ritchie | C
+</pre> 
+    <!-- PRINTING ENDS HERE --> 
+   </div> 
+  </div>
+ </body>
+</html>

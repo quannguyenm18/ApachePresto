@@ -1,0 +1,50 @@
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8">
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="theme/css/style-min.css"> 
+  <style>img{display: inline; height: auto; max-width: 100%;}</style>
+ </head>
+ <body>
+  <div class="content"> 
+   <div class="col-md-7 middle-col"> 
+    <h1>Apache Presto - Administration Tools</h1> 
+    <div class="clearer"></div> 
+    <p>In this chapter, we will discuss the administration tools used in Presto. Let’s start with the Web Interface of Presto.</p> 
+    <h2>Web Interface</h2> 
+    <p>Presto provides a web interface for monitoring and managing queries. It can be accessed from the port number specified in the coordinator Config Properties.</p> 
+    <p>Start Presto server and Presto CLI. Then you can access the web interface from the following url − <b>http://localhost:8080/</b></p> 
+    <img src="images/web_interface.jpg" alt="Web Interface"> 
+    <p>The output will be similar to the above screen.</p> 
+    <p>Here, the main page has a list of queries along with information like unique query ID, query text, query state, percentage completed, username and source from which this query is originated. Latest queries are running first, then completed or not completed queries are displayed at the bottom.</p> 
+    <h2>Tuning the Performance on Presto</h2> 
+    <p>If Presto cluster is having any performance-related issues, change your default configuration settings to the following settings.</p> 
+    <h3>Config Properties</h3> 
+    <ul class="list" style="-webkit-padding-start:5px"> 
+     <li><p><b>task. info -refresh-max-wait</b> − Reduces coordinator work load.</p></li> 
+     <li><p><b>task.max-worker-threads</b> − Splits the process and assigns to each worker nodes.</p></li> 
+     <li><p><b>distributed-joins-enabled</b> − Hash-based distributed joins.</p></li> 
+     <li><p><b>node-scheduler.network-topology</b> − Sets network topology to scheduler.</p></li> 
+    </ul> 
+    <h3>JVM Settings</h3> 
+    <p>Change your default JVM settings to the following settings. This will be helpful for diagnosing garbage collection issues.</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+-XX:+PrintGCApplicationConcurrentTime 
+-XX:+PrintGCApplicationStoppedTime 
+-XX:+PrintGCCause 
+-XX:+PrintGCDateStamps 
+-XX:+PrintGCTimeStamps 
+-XX:+PrintGCDetails 
+-XX:+PrintReferenceGC 
+-XX:+PrintClassHistogramAfterFullGC 
+-XX:+PrintClassHistogramBeforeFullGC 
+-XX:PrintFLSStatistics = 2 
+-XX:+PrintAdaptiveSizePolicy 
+-XX:+PrintSafepointStatistics 
+-XX:PrintSafepointStatisticsCount = 1 
+</pre> 
+    <!-- PRINTING ENDS HERE --> 
+   </div> 
+  </div>
+ </body>
+</html>

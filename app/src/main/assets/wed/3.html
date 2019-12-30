@@ -1,0 +1,199 @@
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8">
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="theme/css/style-min.css"> 
+  <style>img{display: inline; height: auto; max-width: 100%;}</style>
+ </head>
+ <body>
+  <div class="content"> 
+   <div class="col-md-7 middle-col"> 
+    <h1>Apache Presto - Installation</h1> 
+    <div class="clearer"></div> 
+    <p>This chapter will explain how to install Presto on your machine. Let’s go through the basic requirements of Presto,</p> 
+    <ul class="list" style="-webkit-padding-start:5px"> 
+     <li>Linux or Mac OS</li> 
+     <li>Java version 8</li> 
+    </ul> 
+    <p>Now, let’s continue the following steps to install Presto on your machine.</p> 
+    <h2>Verifying Java installation</h2> 
+    <p>Hopefully, you have already installed Java version 8 on your machine right now, so you just verify it using the following command.</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ java -version 
+</pre> 
+    <p>If Java is successfully installed on your machine, you could see the version of installed Java. If Java is not installed, follow the subsequent steps to install Java 8 on your machine.</p> 
+    <p>Download JDK. Download the latest version of JDK by visiting the following link.</p> 
+    <p><a target="_blank" rel="nofollow">http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html</a></p> 
+    <p>The latest version is JDK 8u 92 and the file is “jdk-8u92-linux-x64.tar.gz”. Please download the file on your machine.</p> 
+    <p>After that, extract the files and move to the specific directory.</p> 
+    <p>Then set Java alternatives. Finally Java will be installed on your machine.</p> 
+    <h2>Apache Presto Installation</h2> 
+    <p>Download the latest version of Presto by visiting the following link,</p> 
+    <p><a target="_blank" rel="nofollow">https://repo1.maven.org/maven2/com/facebook/presto/presto-server/0.149/</a></p> 
+    <p>Now the latest version of “presto-server-0.149.tar.gz” will be downloaded on your machine.</p> 
+    <h3>Extract tar Files</h3> 
+    <p>Extract the <b>tar</b> file using the following command −</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ tar  -zxf  presto-server-0.149.tar.gz 
+$ cd presto-server-0.149 
+</pre> 
+    <h2>Configuration Settings</h2> 
+    <h3>Create “data” directory</h3> 
+    <p>Create a data directory outside the installation directory, which will be used for storing logs, metadata, etc., so that it is to be easily preserved when upgrading Presto. It is defined using the following code −</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ cd  
+$ mkdir data
+</pre> 
+    <p>To view the path where it is located, use the command “pwd”. This location will be assigned in the next node.properties file.</p> 
+    <h3>Create “etc” directory</h3> 
+    <p>Create an etc directory inside Presto installation directory using the following code −</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ cd presto-server-0.149 
+$ mkdir etc
+</pre> 
+    <p>This directory will hold configuration files. Let’s create each file one by one.</p> 
+    <h3>Node Properties</h3> 
+    <p>Presto node properties file contains environmental configuration specific to each node. It is created inside etc directory (etc/node.properties) using the following code −</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ cd etc 
+$ vi node.properties  
+
+node.environment = production 
+node.id = ffffffff-ffff-ffff-ffff-ffffffffffff 
+node.data-dir = /Users/../workspace/Presto
+</pre> 
+    <p>After making all the changes, save the file, and quit the terminal. Here <b>node.data</b> is the location path of the above created data directory. <b>node.id</b> represents the unique identifier for each node.</p> 
+    <h3>JVM Config</h3> 
+    <p>Create a file “jvm.config” inside etc directory (etc/jvm.config). This file contains a list of command line options used for launching the Java Virtual Machine.</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ cd etc 
+$ vi jvm.config  
+
+-server 
+-Xmx16G 
+-XX:+UseG1GC 
+-XX:G1HeapRegionSize = 32M 
+-XX:+UseGCOverheadLimit 
+-XX:+ExplicitGCInvokesConcurrent 
+-XX:+HeapDumpOnOutOfMemoryError 
+-XX:OnOutOfMemoryError = kill -9 %p 
+</pre> 
+    <p>After making all the changes, save the file, and quit the terminal.</p> 
+    <h3>Config Properties</h3> 
+    <p>Create a file “config.properties” inside etc directory(etc/config.properties). This file contains the configuration of Presto server. If you are setting up a single machine for testing, Presto server can function only as the coordination process as defined using the following code −</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ cd etc 
+$ vi config.properties  
+
+coordinator = true 
+node-scheduler.include-coordinator = true 
+http-server.http.port = 8080 
+query.max-memory = 5GB 
+query.max-memory-per-node = 1GB 
+discovery-server.enabled = true 
+discovery.uri = http://localhost:8080
+</pre> 
+    <p>Here,</p> 
+    <ul class="list" style="-webkit-padding-start:5px"> 
+     <li><p><b>coordinator</b> − master node.</p></li> 
+     <li><p><b>node-scheduler.include-coordinator</b> − Allows scheduling work on the coordinator.</p></li> 
+     <li><p><b>http-server.http.port</b> − Specifies the port for the HTTP server.</p></li> 
+     <li><p><b>query.max-memory=5GB</b> − The maximum amount of distributed memory.</p></li> 
+     <li><p><b>query.max-memory-per-node=1GB</b> − The maximum amount of memory per node.</p></li> 
+     <li><p><b>discovery-server.enabled</b> − Presto uses the Discovery service to find all the nodes in the cluster.</p></li> 
+     <li><p><b>discovery.uri</b> − he URI to the Discovery server.</p></li> 
+    </ul> 
+    <p>If you are setting up multiple machine Presto server, Presto will function as both coordination and worker process. Use this configuration setting to test Presto server on multiple machines.</p> 
+    <h3>Configuration for Coordinator</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ cd etc 
+$ vi config.properties  
+
+coordinator = true 
+node-scheduler.include-coordinator = false 
+http-server.http.port = 8080 
+query.max-memory = 50GB 
+query.max-memory-per-node = 1GB 
+discovery-server.enabled = true 
+discovery.uri = http://localhost:8080 
+</pre> 
+    <h3>Configuration for Worker</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ cd etc 
+$ vi config.properties  
+
+coordinator = false 
+http-server.http.port = 8080 
+query.max-memory = 50GB 
+query.max-memory-per-node = 1GB 
+discovery.uri = http://localhost:8080
+</pre> 
+    <h3>Log Properties</h3> 
+    <p>Create a file “log.properties” inside etc directory(etc/log.properties). This file contains minimum log level for named logger hierarchies. It is defined using the following code −</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ cd etc 
+$ vi log.properties  
+com.facebook.presto = INFO
+</pre> 
+    <p>Save the file and quit the terminal. Here, four log levels are used such as DEBUG, INFO, WARN and ERROR. Default log level is INFO.</p> 
+    <h3>Catalog Properties</h3> 
+    <p>Create a directory “catalog” inside etc directory(etc/catalog). This will be used for mounting data. For example, create <b>etc/catalog/jmx.properties</b> with the following contents to mount the <b>jmx connector</b> as the jmx catalog −</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ cd etc 
+$ mkdir catalog 
+$ cd catalog 
+$ vi jmx.properties  
+connector.name = jmx 
+</pre> 
+    <h2>Start Presto</h2> 
+    <p>Presto can be started using the following command,</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ bin/launcher start 
+</pre> 
+    <p>Then you will see the response similar to this,</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+Started as 840
+</pre> 
+    <h2>Run Presto</h2> 
+    <p>To launch Presto server, use the following command −</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ bin/launcher run
+</pre> 
+    <p>After successfully launching Presto server, you can find log files in “var/log” directory.</p> 
+    <ul class="list" style="-webkit-padding-start:5px"> 
+     <li><p><b>launcher.log</b> − This log is created by the launcher and is connected to the stdout and stderr streams of the server.</p></li> 
+     <li><p><b>server.log</b> − This is the main log file used by Presto.</p></li> 
+     <li><p><b>http-request.log</b> − HTTP request received by the server.</p></li> 
+    </ul> 
+    <p>As of now, you have successfully installed Presto configuration settings on your machine. Let’s continue the steps to install Presto CLI.</p> 
+    <h2>Install Presto CLI</h2> 
+    <p>The Presto CLI provides a terminal-based interactive shell for running queries.</p> 
+    <p>Download the Presto CLI by visiting the following link,</p> 
+    <p><a target="_blank" rel="nofollow">https://repo1.maven.org/maven2/com/facebook/presto/presto-cli/0.149/</a></p> 
+    <p>Now “presto-cli-0.149-executable.jar” will be installed on your machine.</p> 
+    <h3>Run CLI</h3> 
+    <p>After downloading the presto-cli, copy it to the location which you want to run it from. This location may be any node that has network access to the coordinator. First change the name of the Jar file to Presto. Then make it executable with <b>chmod + x</b> command using the following code −</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ mv presto-cli-0.149-executable.jar presto  
+$ chmod +x presto
+</pre> 
+    <p>Now execute CLI using the following command,</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+./presto --server localhost:8080 --catalog jmx --schema default  
+Here jmx(Java Management Extension) refers to catalog and default referes to schema. 
+</pre> 
+    <p>You will see the following response,</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+ presto:default&gt;
+</pre> 
+    <p>Now type “jps” command on your terminal and you will see the running daemons.</p> 
+    <h2>Stop Presto</h2> 
+    <p>After having performed all the executions, you can stop the presto server using the following command −</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ bin/launcher stop 
+</pre> 
+    <!-- PRINTING ENDS HERE --> 
+   </div> 
+  </div>
+ </body>
+</html>

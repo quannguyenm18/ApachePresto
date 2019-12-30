@@ -1,0 +1,586 @@
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8">
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="theme/css/style-min.css"> 
+  <style>img{display: inline; height: auto; max-width: 100%;}</style>
+ </head>
+ <body>
+  <div class="content"> 
+   <div class="col-md-7 middle-col"> 
+    <h1>Apache Presto - SQL Functions</h1> 
+    <div class="clearer"></div> 
+    <p>As of now we were discussing running some simple basic queries on Presto. This chapter will discuss the important SQL functions.</p> 
+    <h2>Math Functions</h2> 
+    <p>Math functions operate on mathematical formulas. Following table describes the list of functions in detail.</p> 
+    <table class="table table-bordered" style="background-color:white"> 
+     <tbody> 
+      <tr> 
+       <th style="text-align:center;">S.No.</th> 
+       <th style="text-align:center;">Function &amp; Description</th> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">1.</td> 
+       <td><a>abs(x)</a> <p>Returns the absolute value of <b>x</b></p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">2.</td> 
+       <td><a>cbrt(x)</a> <p>Returns the cube root of <b>x</b></p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">3.</td> 
+       <td><a>ceiling(x)</a> <p>Returns the <b>x</b> value rounded up to the nearest integer</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">4.</td> 
+       <td><p><b>ceil(x)</b></p> <p>Alias for ceiling(x)</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">5.</td> 
+       <td><a>degrees(x)</a> <p>Returns the degree value for <b>x</b></p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">6.</td> 
+       <td><a>e(x)</a> <p>Returns the double value for Euler’s number</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">7.</td> 
+       <td><p><b>exp(x)</b></p> <p>Returns the exponent value for Euler’s number</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">8.</td> 
+       <td><a>floor(x)</a> <p>Returns <b>x</b> rounded down to the nearest integer</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">9.</td> 
+       <td><p><b>from_base(string,radix)</b></p> <p>Returns the value of string interpreted as a base-radix number</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">10.</td> 
+       <td><p><b>ln(x)</b></p> <p>Returns the natural logarithm of <b>x</b></p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">11.</td> 
+       <td><a>log2(x)</a> <p>Returns the base 2 logarithm of <b>x</b></p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">12.</td> 
+       <td><p><b>log10(x)</b></p> <p>Returns the base 10 logarithm of <b>x</b></p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">13.</td> 
+       <td><p><b>log(x,y)</b></p> <p>Returns the base <b>y</b> logarithm of <b>x</b></p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">14.</td> 
+       <td><a>mod(n,m)</a> <p>Returns the modulus (remainder) of <b>n</b> divided by <b>m</b></p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">15.</td> 
+       <td><p><b>pi()</b></p> <p>Returns pi value. The result will be returned as a double value</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">16.</td> 
+       <td><a>power(x,p)</a> <p>Returns power of value <b>‘p’</b> to the <b>x</b> value</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">17.</td> 
+       <td><p><b>pow(x,p)</b></p> <p>Alias for power(x,p)</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">18.</td> 
+       <td><a>radians(x)</a> <p>converts the angle <b>x</b> in degree radians</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">19.</td> 
+       <td><p><b>rand()</b></p> <p>Alias for radians()</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">20.</td> 
+       <td><a>random()</a> <p>Returns the pseudo-random value</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">21.</td> 
+       <td><p><b>rand(n)</b></p> <p>Alias for random()</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">22.</td> 
+       <td><a>round(x)</a> <p>Returns the rounded value for x</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">23.</td> 
+       <td><p><b>round(x,d)</b></p> <p><b>x</b> value rounded for the <b>‘d’</b> decimal places</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">24.</td> 
+       <td><p><b>sign(x)</b></p> <p>Returns the signum function of x, i.e.,</p> <p>0 if the argument is 0</p> <p>1 if the argument is greater than 0</p> <p>-1 if the argument is less than 0</p> <p>For double arguments, the function additionally returns −</p> <p>NaN if the argument is NaN</p> <p>1 if the argument is +Infinity</p> <p>-1 if the argument is -Infinity</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">25.</td> 
+       <td><a>sqrt(x)</a> <p>Returns the square root of <b>x</b></p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">26.</td> 
+       <td><a>to_base(x,radix)</a> <p>Return type is archer. The result is returned as the base radix for <b>x</b></p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">27.</td> 
+       <td><a>truncate(x)</a> <p>Truncates the value for <b>x</b></p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">28.</td> 
+       <td><a>width_bucket(x, bound1, bound2, n)</a> <p>Returns the bin number of <b>x</b> specified bound1 and bound2 bounds and n number of buckets</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">29.</td> 
+       <td><a>width_bucket(x, bins)</a> <p>Returns the bin number of <b>x</b> according to the bins specified by the array bins</p> </td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h2>Trigonometric Functions</h2> 
+    <p>Trigonometric functions arguments are represented as radians(). Following table lists out the functions.</p> 
+    <table class="table table-bordered" style="background-color:white"> 
+     <tbody> 
+      <tr> 
+       <th style="text-align:center;">S.No</th> 
+       <th style="text-align:center;"> Functions &amp; Description</th> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">1.</td> 
+       <td><a>acos(x)</a> <p>Returns the inverse cosine value(x)</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">2.</td> 
+       <td><p><b>asin(x)</b></p> <p>Returns the inverse sine value(x)</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">3.</td> 
+       <td><p><b>atan(x)</b></p> <p>Returns the inverse tangent value(x)</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">4.</td> 
+       <td><a>atan2(y,x)</a> <p>Returns the inverse tangent value(y/x)</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">5.</td> 
+       <td><p><b>cos(x)</b></p> <p>Returns the cosine value(x)</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">6.</td> 
+       <td><a>cosh(x)</a> <p>Returns the hyperbolic cosine value(x)</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">7.</td> 
+       <td><a>sin(x)</a> <p>Returns the sine value(x)</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">8.</td> 
+       <td><p><b>tan(x)</b></p> <p>Returns the tangent value(x)</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">9.</td> 
+       <td><p><b>tanh(x)</b></p> <p>Returns the hyperbolic tangent value(x)</p> </td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h2>Bitwise Functions</h2> 
+    <p>The following table lists out the Bitwise functions.</p> 
+    <table class="table table-bordered" style="background-color:white"> 
+     <tbody> 
+      <tr> 
+       <th style="text-align:center;">S.No</th> 
+       <th style="text-align:center;">Functions &amp; Description</th> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">1.</td> 
+       <td><a>bit_count(x, bits)</a> <p>Count the number of bits</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">2.</td> 
+       <td><a>bitwise_and(x,y)</a> <p>Perform bitwise AND operation for two bits, <b>x</b> and <b>y</b></p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">3.</td> 
+       <td><a>bitwise_or(x,y)</a> <p>Bitwise OR operation between two bits <b>x, y</b></p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">4.</td> 
+       <td><a>bitwise_not(x)</a> <p>Bitwise Not operation for bit <b>x</b></p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">5.</td> 
+       <td><a>bitwise_xor(x,y)</a> <p>XOR operation for bits <b>x, y</b></p> </td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h2>String Functions</h2> 
+    <p>Following table lists out the String functions.</p> 
+    <table class="table table-bordered" style="background-color:white"> 
+     <tbody> 
+      <tr> 
+       <th style="text-align:center;">S.No</th> 
+       <th style="text-align:center;">Functions &amp; Description</th> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">1.</td> 
+       <td><a>concat(string1, ..., stringN)</a> <p>Concatenate the given strings</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">2.</td> 
+       <td><a>length(string)</a> <p>Returns the length of the given string</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">3.</td> 
+       <td><a>lower(string)</a> <p>Returns the lowercase format for the string</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">4.</td> 
+       <td><a>upper(string)</a> <p>Returns the uppercase format for the given string</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">5.</td> 
+       <td><a>lpad(string, size, padstring)</a> <p>Left padding for the given string</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">6.</td> 
+       <td><a>ltrim(string)</a> <p>Removes the leading whitespace from the string</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">7.</td> 
+       <td><a>replace(string, search, replace)</a> <p>Replaces the string value</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">8.</td> 
+       <td><a>reverse(string)</a> <p>Reverses the operation performed for the string</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">9.</td> 
+       <td><a>rpad(string, size, padstring)</a> <p>Right padding for the given string</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">10.</td> 
+       <td><a>rtrim(string)</a> <p>Removes the trailing whitespace from the string</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">11.</td> 
+       <td><a>split(string, delimiter)</a> <p>Splits the string on delimiter and returns an array of size at the most limit</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">12.</td> 
+       <td><a>split_part(string, delimiter, index)</a> <p>Splits the string on delimiter and returns the field index</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">13.</td> 
+       <td><a>strpos(string, substring)</a> <p>Returns the starting position of the substring in the string</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">14.</td> 
+       <td><a>substr(string, start)</a> <p>Returns the substring for the given string</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">15.</td> 
+       <td><a>substr(string, start, length)</a> <p>Returns the substring for the given string with the specific length</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">16.</td> 
+       <td><a>trim(string)</a> <p>Removes the leading and trailing whitespace from the string</p> </td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h2>Date and Time Functions</h2> 
+    <p>Following table lists out the Date and Time functions.</p> 
+    <table class="table table-bordered" style="background-color:white"> 
+     <tbody> 
+      <tr> 
+       <th style="text-align:center;">S.No</th> 
+       <th style="text-align:center;">Functions &amp; Description</th> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">1.</td> 
+       <td><a>current_date</a> <p>Returns the current date</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">2.</td> 
+       <td><a>current_time</a> <p>Returns the current time</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">3.</td> 
+       <td><a>current_timestamp</a> <p>Returns the current timestamp</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">4.</td> 
+       <td><a>current_timezone()</a> <p>Returns the current timezone</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">5.</td> 
+       <td><a>now()</a> <p>Returns the current date,timestamp with the timezone</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">6.</td> 
+       <td><a>localtime</a> <p>Returns the local time</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">7.</td> 
+       <td><a>localtimestamp</a> <p>Returns the local timestamp</p> </td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h2>Regular Expression Functions</h2> 
+    <p>The following table lists out the Regular Expression functions.</p> 
+    <table class="table table-bordered" style="background-color:white"> 
+     <tbody> 
+      <tr> 
+       <th style="text-align:center;">S.No</th> 
+       <th style="text-align:center;">Functions &amp; Description</th> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">1.</td> 
+       <td><a>regexp_extract_all(string, pattern)</a> <p>Returns the string matched by the regular expression for the pattern</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">2.</td> 
+       <td><a>regexp_extract_all(string, pattern, group)</a> <p>Returns the string matched by the regular expression for the pattern and the group</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">3.</td> 
+       <td><a>regexp_extract(string, pattern)</a> <p>Returns the first substring matched by the regular expression for the pattern</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">4.</td> 
+       <td><a>regexp_extract(string, pattern, group)</a> <p>Returns the first substring matched by the regular expression for the pattern and the group</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">5.</td> 
+       <td><a>regexp_like(string, pattern)</a> <p>Returns the string matches for the pattern. If the string is returned, the value will be true otherwise false</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">6.</td> 
+       <td><a>regexp_replace(string, pattern)</a> <p>Replaces the instance of the string matched for the expression with the pattern</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">7.</td> 
+       <td><a>regexp_replace(string, pattern, replacement)</a> <p>Replace the instance of the string matched for the expression with the pattern and replacement</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">8.</td> 
+       <td><a>regexp_split(string, pattern)</a> <p>Splits the regular expression for the given pattern</p> </td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h2>JSON Functions</h2> 
+    <p>The following table lists out JSON functions.</p> 
+    <table class="table table-bordered" style="background-color:white"> 
+     <tbody> 
+      <tr> 
+       <th style="text-align:center;">S.No</th> 
+       <th style="text-align:center;">Functions &amp; Description</th> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">1.</td> 
+       <td><a>json_array_contains(json, value)</a> <p>Check the value exists in a json array. If the value exists it will return true, otherwise false</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">2.</td> 
+       <td><a>json_array_get(json_array, index)</a> <p>Get the element for index in json array</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">3.</td> 
+       <td><a>json_array_length(json)</a> <p>Returns the length in json array</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">4.</td> 
+       <td><a>json_format(json)</a> <p>Returns the json structure format</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">5.</td> 
+       <td><a>json_parse(string)</a> <p>Parses the string as a json</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">6.</td> 
+       <td><a>json_size(json, json_path)</a> <p>Returns the size of the value</p> </td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h2>URL Functions</h2> 
+    <p>The following table lists out the URL functions.</p> 
+    <table class="table table-bordered" style="background-color:white"> 
+     <tbody> 
+      <tr> 
+       <th style="text-align:center;">S.No</th> 
+       <th style="text-align:center;">Functions &amp; Description</th> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">1.</td> 
+       <td><a>url_extract_host(url)</a> <p>Returns the URL’s host</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">2.</td> 
+       <td><a>url_extract_path(url)</a> <p>Returns the URL’s path</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">3.</td> 
+       <td><a>url_extract_port(url)</a> <p>Returns the URL’s port</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">4.</td> 
+       <td><a>url_extract_protocol(url)</a> <p>Returns the URL’s protocol</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">5.</td> 
+       <td><a>url_extract_query(url)</a> <p>Returns the URL’s query string</p> </td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h2>Aggregate Functions</h2> 
+    <p>The following table lists out the Aggregate functions.</p> 
+    <table class="table table-bordered" style="background-color:white"> 
+     <tbody> 
+      <tr> 
+       <th style="text-align:center;">S.No</th> 
+       <th style="text-align:center;">Functions &amp; Description</th> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">1.</td> 
+       <td><p><b>avg(x)</b></p> <p>Returns average for the given value</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">2.</td> 
+       <td><a>min(x,n)</a> <p>Returns the minimum value from two values</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">3.</td> 
+       <td><a>max(x,n)</a> <p>Returns the maximum value from two values</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">4.</td> 
+       <td><a>sum(x)</a> <p>Returns the sum of value</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">5.</td> 
+       <td><a>count(*)</a> <p>Returns the number of input rows</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">6.</td> 
+       <td><a>count(x)</a> <p>Returns the count of input values</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">7.</td> 
+       <td><a>checksum(x)</a> <p>Returns the checksum for <b>x</b></p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">8.</td> 
+       <td><a>arbitrary(x)</a> <p>Returns the arbitrary value for <b>x</b></p> </td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h2>Color Functions</h2> 
+    <p>Following table lists out the Color functions.</p> 
+    <table class="table table-bordered" style="background-color:white"> 
+     <tbody> 
+      <tr> 
+       <th style="text-align:center;">S.No</th> 
+       <th style="text-align:center;">Functions &amp; Description</th> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">1.</td> 
+       <td><a>bar(x, width)</a> <p>Renders a single bar using rgb low_color and high_color</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">2.</td> 
+       <td><a>bar(x, width, low_color, high_color)</a> <p>Renders a single bar for the specified width</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">3.</td> 
+       <td><a>color(string)</a> <p>Returns the color value for the entered string</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">4.</td> 
+       <td><a>render(x, color)</a> <p>Renders value x using the specific color using ANSI color codes</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">5.</td> 
+       <td><a>render(b)</a> <p>Accepts boolean value b and renders a green true or a red false using ANSI color codes</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">6.</td> 
+       <td><p><b>rgb(red, green, blue)</b></p> <p>Returns a color value capturing the RGB value of three component color values supplied as int parameters ranging from 0 to 255</p> </td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h2>Array Functions</h2> 
+    <p>The following table lists out the Array functions.</p> 
+    <table class="table table-bordered" style="background-color:white"> 
+     <tbody> 
+      <tr> 
+       <th style="text-align:center;">S.No</th> 
+       <th style="text-align:center;">Functions &amp; Description</th> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">1.</td> 
+       <td><a>array_max(x)</a> <p>Finds the max element in an array</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">2.</td> 
+       <td><a>array_min(x)</a> <p>Finds the min element in an array</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">3.</td> 
+       <td><a>array_sort(x)</a> <p>Sorts the elements in an array</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">4.</td> 
+       <td><a>array_remove(x,element)</a> <p>Removes the specific element from an array</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">5.</td> 
+       <td><a>concat(x,y)</a> <p>Concatenates two arrays</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">6.</td> 
+       <td><a>contains(x,element)</a> <p>Finds the given elements in an array. True will be returned if it is present, otherwise false</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">7.</td> 
+       <td><a>array_position(x,element)</a> <p>Find the position of the given element in an array</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">8.</td> 
+       <td><a>array_intersect(x,y)</a> <p>Performs an intersection between two arrays</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">9.</td> 
+       <td><a>element_at(array,index)</a> <p>Returns the array element position</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">10.</td> 
+       <td><a>slice(x,start,length)</a> <p>Slices the array elements with the specific length</p> </td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <h2>Teradata Functions</h2> 
+    <p>The following table lists out Teradata functions.</p> 
+    <table class="table table-bordered" style="background-color:white"> 
+     <tbody> 
+      <tr> 
+       <th style="text-align:center;">S.No</th> 
+       <th style="text-align:center;">Functions &amp; Description</th> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">1.</td> 
+       <td><a>index(string,substring)</a> <p>Returns the index of the string with the given substring</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">2.</td> 
+       <td><a>substring(string,start)</a> <p>Returns the substring of the given string. You can specify the start index here</p> </td> 
+      </tr> 
+      <tr> 
+       <td style="text-align:center;">3.</td> 
+       <td><a>substring(string,start,length)</a> <p>Returns the substring of the given string for the specific start index and length of the string</p> </td> 
+      </tr> 
+     </tbody> 
+    </table> 
+    <!-- PRINTING ENDS HERE --> 
+   </div> 
+  </div>
+ </body>
+</html>

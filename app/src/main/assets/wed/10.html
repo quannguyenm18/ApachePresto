@@ -1,0 +1,103 @@
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8">
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="theme/css/style-min.css"> 
+  <style>img{display: inline; height: auto; max-width: 100%;}</style>
+ </head>
+ <body>
+  <div class="content"> 
+   <div class="col-md-7 middle-col"> 
+    <h1>Apache Presto - HIVE Connector</h1> 
+    <div class="clearer"></div> 
+    <p>The Hive connector allows querying data stored in a Hive data warehouse.</p> 
+    <h3>Prerequisites</h3> 
+    <ul class="list" style="-webkit-padding-start:5px"> 
+     <li>Hadoop</li> 
+     <li>Hive</li> 
+    </ul> 
+    <p>Hopefully you have installed Hadoop and Hive on your machine. Start all the services one by one in the new terminal. Then, start hive metastore using the following command,</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+hive --service metastore
+</pre> 
+    <p>Presto uses Hive metastore service to get the hive table’s details.</p> 
+    <h2>Configuration Settings</h2> 
+    <p>Create a file <b>“hive.properties”</b> under <b>“etc/catalog”</b> directory. Use the following command.</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ cd etc 
+$ cd catalog 
+$ vi hive.properties  
+
+connector.name = hive-cdh4 
+hive.metastore.uri = thrift://localhost:9083
+</pre> 
+    <p>After making all the changes, save the file and quit the terminal.</p> 
+    <h2>Create Database</h2> 
+    <p>Create a database in Hive using the following query −</p> 
+    <h3>Query</h3> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+hive&gt; CREATE SCHEMA tutorials; 
+</pre> 
+    <p>After the database is created, you can verify it using the <b>“show databases”</b> command.</p> 
+    <h2>Create Table</h2> 
+    <p>Create Table is a statement used to create a table in Hive. For example, use the following query.</p> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+hive&gt; create table author(auth_id int, auth_name varchar(50), 
+topic varchar(100) STORED AS SEQUENCEFILE;
+</pre> 
+    <h2>Insert Table</h2> 
+    <p>Following query is used to insert records in hive’s table.</p> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+hive&gt; insert into table author values (1,’ Doug Cutting’,Hadoop),
+(2,’ James Gosling’,java),(3,’ Dennis Ritchie’,C);
+</pre> 
+    <h2>Start Presto CLI</h2> 
+    <p>You can start Presto CLI to connect Hive storage plugin using the following command.</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+$ ./presto --server localhost:8080 --catalog hive —schema tutorials; 
+</pre> 
+    <p>You will receive the following response.</p> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+presto:tutorials &gt;
+</pre> 
+    <h2>List Schemas</h2> 
+    <p>To list out all the schemas in Hive connector, type the following command.</p> 
+    <h3>Query</h3> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+presto:tutorials &gt; show schemas from hive;
+</pre> 
+    <h3>Result</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+default  
+
+tutorials 
+</pre> 
+    <h2>List Tables</h2> 
+    <p>To list out all the tables in “tutorials” schema, use the following query.</p> 
+    <h3>Query</h3> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+presto:tutorials &gt; show tables from hive.tutorials; 
+</pre> 
+    <h3>Result</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+author
+</pre> 
+    <h2>Fetch Table</h2> 
+    <p>Following query is used to fetch all the records from hive’s table.</p> 
+    <h3>Query</h3> 
+    <pre class="prettyprint notranslate" style="white-space:pre-wrap;">
+presto:tutorials &gt; select * from hive.tutorials.author; 
+</pre> 
+    <h3>Result</h3> 
+    <pre class="result notranslate" style="white-space:pre-wrap;">
+auth_id  |   auth_name    | topic 
+---------+----------------+-------- 
+       1 | Doug Cutting   | Hadoop 
+       2 | James Gosling  | java 
+       3 | Dennis Ritchie | C
+</pre> 
+    <!-- PRINTING ENDS HERE --> 
+   </div> 
+  </div>
+ </body>
+</html>
