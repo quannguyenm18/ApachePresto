@@ -6,29 +6,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.Toast;
-
-import com.example.materialdl.model.Name;
-
-import java.util.ArrayList;
-import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     private ListView lv_item;
-    private ArrayList<Name> nameArrayList;
+    private String[] title={"0.APT- Home","1.APT- Overview","2.APT- Architecture","3.APT- Installation",
+            "4.APT- Configuration Settings","5.APT- Administration Tools","6.APT-Basic SQL Operations",
+            "7.APT- SQL Functions",
+            "8.APT- MySQL Connector","9.APT- JMX Connector","10.APT- HIVE Connector","11.APT- KAFKA Connector",
+            "12.APT- JDBC Interface","13.APT- Custom Function Application","14.APT- Quick Guide","15.APT- Useful Resources",
+            "16.APT- Discuss Apache Presto"};
 
-    private ListAdapter listAdapter;
     private  SearchView searchView;
+
 
 
     @Override
@@ -38,49 +34,27 @@ public class MainActivity extends AppCompatActivity {
 
         lv_item = findViewById(R.id.lv_item);
 
-        nameArrayList= new ArrayList<>();
-        nameArrayList.add(new Name("0.APT-Home"));
-        nameArrayList.add(new Name("1.APT-Overview"));
-        nameArrayList.add(new Name("2.APT-Architecture"));
-        nameArrayList.add(new Name("3.APT-Installation"));
-        nameArrayList.add(new Name("4.APT-Configuration Settings"));
-        nameArrayList.add(new Name("5.APT-Administration Tools"));
-        nameArrayList.add(new Name("6.APT-Basic SQL Operations"));
-        nameArrayList.add(new Name("7.APT-SQL Functions"));
-        nameArrayList.add(new Name("8.APT-MySQL Connector"));
-        nameArrayList.add(new Name("9.APT-JMX Connector"));
-        nameArrayList.add(new Name( "10.APT- HIVE Connector"));
-        nameArrayList.add(new Name( "11.APT-KAFKA Connector"));
-        nameArrayList.add(new Name("12.APT-JDBC Interface"));
-        nameArrayList.add(new Name("13.APT-Custom Function Application"));
-        nameArrayList.add(new Name("14.APT-Quick Guide"));
-        nameArrayList.add(new Name("15.APT-Useful Resources"));
-        nameArrayList.add(new Name("16.APT-Discuss Apache Presto"));
+
+        final ArrayAdapter adapter= new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,title);
+        lv_item.setAdapter(adapter);
+        searchView = (SearchView)findViewById(R.id.sv_search);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+                return false;
+            }
+        });
 
 
 
 
-         listAdapter= new com.example.materialdl.adapter.ListAdapter(this,R.layout.item_listview,nameArrayList);
 
-
-          searchView = findViewById(R.id.sv_search);
-          searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-              @Override
-              public boolean onQueryTextSubmit(String text) {
-
-                  return false;
-              }
-
-              @Override
-              public boolean onQueryTextChange(String newText) {
-
-
-                  return false;
-              }
-          });
-
-
-        lv_item.setAdapter(listAdapter);
         lv_item.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -154,4 +128,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public void danhsachfv(View view) {
+        Intent intent= new Intent(getApplicationContext(),ListFavoritesActivity.class);
+        startActivity(intent);
+    }
 }

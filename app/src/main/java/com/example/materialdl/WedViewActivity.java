@@ -11,19 +11,20 @@ import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.materialdl.adapter.WedAdapter;
 import com.example.materialdl.model.Url;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
 public class WedViewActivity extends AppCompatActivity {
-    /* private WebView webView;*/
-
     int position = -1;
     private TextView tv_count;
     WedAdapter wedAdapter;
     ArrayList<Url> urlArrayList;
+    FloatingActionButton floatingActionButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,22 +34,19 @@ public class WedViewActivity extends AppCompatActivity {
         initView();
 
     }
-  /* private void init(){
-        webView = (WebView)findViewById(R.id.wedview);
-        webView.getSettings().setBuiltInZoomControls(true);
-        webView.loadUrl("file:///android_asset/wed/0.html");
-        webView.requestFocus();
 
-    }*/
 
 
     public void initView() {
         tv_count = findViewById(R.id.tv_count);
+      floatingActionButton=findViewById(R.id.fab);
+
+
+
 
         RecyclerView recyclerView = findViewById(R.id.rv_display);
         recyclerView.setHasFixedSize(true);//tối ưu hóa
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
-
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
         urlArrayList = new ArrayList<>();
         urlArrayList.add(new Url("file:///android_asset/wed/0.html"));
         urlArrayList.add(new Url("file:///android_asset/wed/1.html"));
@@ -88,4 +86,20 @@ public class WedViewActivity extends AppCompatActivity {
           wedAdapter.setUrls(urlArrayList.get(position).getUrl());
       }
     }
+
+//    public void Like(View view) {
+//        FloatingActionButton floatingActionButton=findViewById(R.id.fab);
+//
+//        floatingActionButton.setImageResource(R.drawable.ic_star_black_24dp);
+//
+//
+//        Toast.makeText(getApplicationContext(),"Đã Thích",Toast.LENGTH_SHORT).show();
+//    }
+
+
+
+
+
+
+
 }

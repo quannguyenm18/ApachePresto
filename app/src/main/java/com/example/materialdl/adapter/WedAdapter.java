@@ -2,6 +2,7 @@ package com.example.materialdl.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
@@ -18,6 +19,7 @@ public class WedAdapter extends RecyclerView.Adapter<WedAdapter.ViewHolder> {
 
     String urls;
     Context context;
+
 
     public String getUrls() {
         return urls;
@@ -48,6 +50,7 @@ public class WedAdapter extends RecyclerView.Adapter<WedAdapter.ViewHolder> {
         String url = urls;
         holder.webView.loadUrl(url);
         holder.webView.getSettings().setBuiltInZoomControls(true);
+        holder.webView.getSettings().setSupportZoom(true);
         holder.webView.requestFocus();
     }
 
@@ -64,6 +67,9 @@ public class WedAdapter extends RecyclerView.Adapter<WedAdapter.ViewHolder> {
             super(itemView);
             webView = (WebView) itemView.findViewById(R.id.wedview);
 
+
+
         }
     }
+
 }
